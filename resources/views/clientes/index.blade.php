@@ -10,15 +10,14 @@
 
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ltr:mr-2 rtl:ml-2">
-                                <circle cx="10" cy="6" r="4" stroke="currentColor"
-                                    stroke-width="1.5" />
+                                <circle cx="10" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
                                 <path opacity="0.5"
                                     d="M18 17.5C18 19.9853 18 22 10 22C2 22 2 19.9853 2 17.5C2 15.0147 5.58172 13 10 13C14.4183 13 18 15.0147 18 17.5Z"
                                     stroke="currentColor" stroke-width="1.5" />
                                 <path d="M21 10H19M19 10H17M19 10L19 8M19 10L19 12" stroke="currentColor"
                                     stroke-width="1.5" stroke-linecap="round" />
                             </svg>
-                            Add Contact
+                            Nuevo Cliente
                         </button>
                         <div class="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto hidden"
                             :class="addContactModal && '!block'">
@@ -38,39 +37,48 @@
                                         </svg>
                                     </button>
                                     <h3 class="text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]"
-                                        x-text="params.id ? 'Edit Contact' : 'Add Contact'"></h3>
+                                        x-text="params.id ? 'Actualizar Cliente' : 'Agregar Cliente'"></h3>
                                     <div class="p-5">
-                                        <form @submit.prevent="saveUser">
+                                        <form @submit.prevent="saveUser" x-ref="addContactForm"
+                                            class="grid grid-cols-1 gap-5">
                                             <div class="mb-5">
-                                                <label for="name">Name</label>
-                                                <input id="name" type="text" placeholder="Enter Name"
-                                                    class="form-input" x-model="params.name" />
+                                                <label for="name">Nombre y Apellido</label>
+                                                <input id="name" name="name" type="text"
+                                                    placeholder="Enter Name" class="form-input" x-model="params.name" />
                                             </div>
                                             <div class="mb-5">
                                                 <label for="email">Email</label>
-                                                <input id="email" type="email" placeholder="Enter Email"
-                                                    class="form-input" x-model="params.email" />
+                                                <input id="email" name="email" type="email"
+                                                    placeholder="Enter Email" class="form-input"
+                                                    x-model="params.email" />
                                             </div>
                                             <div class="mb-5">
-                                                <label for="number">Phone Number</label>
-                                                <input id="number" type="text" placeholder="Enter Phone Number"
-                                                    class="form-input" x-model="params.phone" />
+                                                <label for="number">Numero de Contacto</label>
+                                                <input id="number" name="phone" type="text"
+                                                    placeholder="Ingresa el numero de contacto" class="form-input"
+                                                    x-model="params.phone" />
                                             </div>
                                             <div class="mb-5">
-                                                <label for="occupation">Occupation</label>
-                                                <input id="occupation" type="text" placeholder="Enter Occupation"
-                                                    class="form-input" x-model="params.role" />
+                                                <label for="document"># Dni</label>
+                                                <input id="document" type="text" name="document"
+                                                    placeholder="Numero de Documento" class="form-input"
+                                                    x-model="params.document" />
+                                            </div>
+                                            <div class="mb-5">
+                                                <label for="Country">País</label>
+                                                <input id="country" type="text" name="country" placeholder="Pais"
+                                                    class="form-input" x-model="params.country" />
                                             </div>
                                             <div class="mb-5">
                                                 <label for="address">Address</label>
-                                                <textarea id="address" rows="3" placeholder="Enter Address" class="form-textarea resize-none min-h-[130px]"
-                                                    x-model="params.location"></textarea>
+                                                <textarea id="address" rows="3" name="address" placeholder="Ingresa la direccion"
+                                                    class="form-textarea resize-none min-h-[130px]" x-model="params.location"></textarea>
                                             </div>
                                             <div class="flex justify-end items-center mt-8">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     @click="addContactModal = false">Cancel</button>
                                                 <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4"
-                                                    x-text="params.id ? 'Update' : 'Add'"></button>
+                                                    x-text="params.id ? 'Actualizar' : 'Agregar'"></button>
                                             </div>
                                         </form>
                                     </div>
@@ -133,8 +141,8 @@
 
                         <svg class="mx-auto" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor"
-                                stroke-width="1.5" opacity="0.5"></circle>
+                            <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5"
+                                opacity="0.5"></circle>
                             <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5"
                                 stroke-linecap="round"></path>
                         </svg>
@@ -148,11 +156,11 @@
                     <table class="table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Location</th>
-                                <th>Phone</th>
-                                <th class="!text-center">Actions</th>
+                                <th>Dirección</th>
+                                <th>Número de contacto</th>
+                                <th class="!text-center"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -175,8 +183,8 @@
                                                 <svg width="24" height="24" viewBox="0 0 24 24"
                                                     fill="none" xmlns="http://www.w3.org/2000/svg"
                                                     class="w-4.5 h-4.5">
-                                                    <circle cx="12" cy="6" r="4"
-                                                        stroke="currentColor" stroke-width="1.5"></circle>
+                                                    <circle cx="12" cy="6" r="4" stroke="currentColor"
+                                                        stroke-width="1.5"></circle>
                                                     <ellipse opacity="0.5" cx="12" cy="17"
                                                         rx="7" ry="4" stroke="currentColor"
                                                         stroke-width="1.5"></ellipse>
@@ -256,8 +264,8 @@
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                                                     class="w-4 h-4">
-                                                    <rect x="2" y="2" width="20"
-                                                        height="20" rx="5" ry="5"></rect>
+                                                    <rect x="2" y="2" width="20" height="20" rx="5"
+                                                        ry="5"></rect>
                                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                                     <line x1="17.5" y1="6.5" x2="17.51"
                                                         y2="6.5"></line>
@@ -275,8 +283,7 @@
                                                     <path
                                                         d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
                                                     </path>
-                                                    <rect x="2" y="9" width="4"
-                                                        height="12"></rect>
+                                                    <rect x="2" y="9" width="4" height="12"></rect>
                                                     <circle cx="4" cy="4" r="2"></circle>
                                                 </svg>
                                             </a>
@@ -327,6 +334,10 @@
 
     <script>
         document.addEventListener("alpine:init", () => {
+
+
+
+
             Alpine.data("contacts", (clientes) => ({
                 defaultParams: {
                     id: null,
@@ -334,6 +345,8 @@
                     email: '',
                     role: '',
                     phone: '',
+                    document: '',
+                    country: '',
                     location: ''
                 },
                 displayType: 'list',
@@ -344,17 +357,21 @@
                     email: '',
                     role: '',
                     phone: '',
+                    document: '',
+                    country: '',
                     location: ''
                 },
                 filterdContactsList: [],
                 searchUser: '',
                 contactList: clientes.map(cliente => ({
                     id: cliente.id,
-                   
+
                     name: cliente.name,
                     email: cliente.email,
                     location: cliente.address,
                     phone: cliente.phone,
+                    document: cliente.document,
+                    country: cliente.country,
                     posts: 0, // Ajusta según tu lógica
                     followers: '0', // Ajusta según tu lógica
                     following: 0 // Ajusta según tu lógica
@@ -391,49 +408,151 @@
                         this.showMessage('Phone is required.', 'error');
                         return true;
                     }
-                    if (!this.params.role) {
-                        this.showMessage('Occupation is required.', 'error');
+                    if (!this.params.country) {
+                        this.showMessage('Country is required.', 'error');
                         return true;
                     }
 
                     if (this.params.id) {
+
+                        $.ajax({
+                            url: "{{ url('clientes/') }}" + "/" + this.params.id,
+                            type: "POST",
+                            data: {
+                                id: this.params.id,
+                                name: this.params.name,
+                                email: this.params.email,
+                                phone: this.params.phone,
+                                address: this.params.location,
+                                country: this.params.country,
+                                document: this.params.document,
+                                _token: "{{ csrf_token() }}",
+                                _method: "PUT"
+                            },
+                            success: (response) => {
+                               
+                                if (response.ok) {
+                                   
+                                    
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 3000,
+                                        showConfirmButton: true,
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                    
+                                } else {
+                                    this.showMessage(response.message, 'error');
+                                }
+                            },
+                            error: (error) => {
+                                this.showMessage(response.message, 'error');
+                            }
+                        });
                         //update user
-                        let user = this.contactList.find((d) => d.id === this.params.id);
+                       /*  let user = this.contactList.find((d) => d.id === this.params.id);
                         user.name = this.params.name;
                         user.email = this.params.email;
-                        user.role = this.params.role;
+                        user.country = this.params.country;
                         user.phone = this.params.phone;
                         user.location = this.params.location;
+                        user.document = this.params.document; */
+
+                    
+
+
                     } else {
                         //add user
-                        let maxUserId = this.contactList.length ? this.contactList.reduce((max,
-                                character) => (character.id > max ? character.id : max), this
-                            .contactList[0].id) : 0;
 
-                        let user = {
-                            id: maxUserId + 1,
-                            path: 'profile-35.png',
-                            name: this.params.name,
-                            email: this.params.email,
-                            role: this.params.role,
-                            phone: this.params.phone,
-                            location: this.params.location,
-                            posts: 20,
-                            followers: '5K',
-                            following: 500,
-                        };
-                        this.contactList.splice(0, 0, user);
-                        this.searchContacts();
+
+
+                        $.ajax({
+                            url: "{{ route('clientes.store') }}",
+                            type: "POST",
+                            data: {
+                                name: this.params.name,
+                                email: this.params.email,
+                                phone: this.params.phone,
+                                address: this.params.location,
+                                country: this.params.country,
+                                document: this.params.document,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: (response) => {
+                                console.log(response);
+                                if (response.ok) {
+                                    /* call toast */
+                                    console.log(response.errors);
+                                    
+                                   Swal.fire({
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 3000,
+                                        showConfirmButton: true,
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    this.showMessage(response.message, 'error');
+                                }
+                            },
+                            error: (error) => {
+                                this.showMessage(response.message, 'error');
+                            }
+                        });
+
                     }
 
-                    this.showMessage('User has been saved successfully.');
+                    //this.showMessage('User has been saved successfully.');
                     this.addContactModal = false;
                 },
 
                 deleteUser(user) {
-                    this.contactList = this.contactList.filter((d) => d.id != user.id);
-                    this.searchContacts();
-                    this.showMessage('User has been deleted successfully.');
+                    
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "{{ url('clientes/') }}" + "/" + user.id,
+                                type: "POST",
+                                data: {
+                                    _token: "{{ csrf_token() }}",
+                                    _method: "DELETE"
+                                },
+                                success: (response) => {
+                                    if (response.ok) {
+                                        Swal.fire({
+                                            title: 'Deleted!',
+                                            text: 'Your file has been deleted.',
+                                            icon: 'success',
+                                            timer: 3000,
+                                            showConfirmButton: true,
+                                        }).then(() => {
+                                            window.location.reload();
+                                        });
+                                    } else {
+                                        this.showMessage(response.message, 'error');
+                                    }
+                                },
+                                error: (error) => {
+                                    this.showMessage(response.message, 'error');
+                                }
+                            });
+                        }
+                    })
+
+                    
                 },
 
                 setDisplayType(type) {

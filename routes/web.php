@@ -10,6 +10,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']);
 
         Route::get('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'index']);
+        Route::post('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'store'])->name('clientes.store');    
+        Route::put('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'update'])->name('clientes.update');
+        Route::delete('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'destroy'])->name('clientes.destroy');
+
+
         Route::get('coches', [App\Http\Controllers\coches\CochesController::class, 'index']);
         Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index']);
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
