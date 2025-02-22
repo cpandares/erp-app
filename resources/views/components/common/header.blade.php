@@ -23,7 +23,7 @@
             </div>
             <div class="ltr:mr-2 rtl:ml-2 hidden sm:block">
                 <ul class="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
-                    <li>
+                    {{-- <li>
                         <a href="/apps/calendar"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -39,9 +39,9 @@
                                     stroke-linecap="round" />
                             </svg>
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
-                        <a href="/apps/todolist"
+                        <a href="{{url('todo')}}"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +57,7 @@
                             </svg>
                         </a>
                     </li>
-                    <li><a href="/apps/chat"
+                    {{-- <li><a href="/apps/chat"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +68,7 @@
                                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
             <div x-data="header"
@@ -166,28 +166,7 @@
                     </a>
                 </div>
 
-                <div class="dropdown shrink-0" x-data="dropdown" @click.outside="open = false">
-                    <a href="javascript:;"
-                        class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
-                        @click="toggle">
-                        <img :src="`/assets/images/flags/${$store.app.locale.toUpperCase()}.svg`" alt="image"
-                            class="w-5 h-5 object-cover rounded-full" />
-                    </a>
-                    <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
-                        class="ltr:-right-14 sm:ltr:-right-2 rtl:-left-14 sm:rtl:-left-2 top-11 !px-2 text-dark dark:text-white-dark grid grid-cols-2 gap-y-2 font-semibold dark:text-white-light/90 w-[280px]">
-                        <template x-for="item in languages">
-                            <li>
-                                <a href="javascript:;" class="hover:text-primary"
-                                    @click="$store.app.toggleLocale(item.value),toggle()"
-                                    :class="{ 'bg-primary/10 text-primary': $store.app.locale == item.value }">
-                                    <img class="w-5 h-5 object-cover rounded-full"
-                                        :src="`/assets/images/flags/${item.value.toUpperCase()}.svg`" alt="image" />
-                                    <span class="ltr:ml-3 rtl:mr-3" x-text="item.key"></span>
-                                </a>
-                            </li>
-                        </template>
-                    </ul>
-                </div>
+               
 
                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;"
@@ -444,7 +423,7 @@
                                 Lock Screen</a>
                         </li>
                         <li class="border-t border-white-light dark:border-white-light/10">
-                            <a href="/auth/boxed-signin" class=" text-danger !py-3" @click="toggle">
+                            <a href="{{url('logout')}}" class=" text-danger !py-3" @click="toggle">
                                 <svg class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0 rotate-90" width="18" height="18"
                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.5"
@@ -544,7 +523,7 @@
                     </div>
                 </a>
                 <ul class="sub-menu">
-                    <li>
+                    {{-- <li>
                         <a href="/apps/chat">Chat</a>
                     </li>
                     <li>
@@ -561,7 +540,7 @@
                     </li>
                     <li>
                         <a href="/apps/contacts">Contacts</a>
-                    </li>
+                    </li> --}}
                     <li class="relative">
                         <a href="javascript:;">Invoice
                             <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-180">

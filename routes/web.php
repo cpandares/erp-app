@@ -2,11 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/todo', [App\Http\Controllers\todo\TodoController::class, 'index']);
-Route::get('/', [App\Http\Controllers\contacts\ContactsController::class, 'index']);
-Route::get('/notes', [App\Http\Controllers\note\NoteController::class, 'index']);
-Route::get('/scrum', [App\Http\Controllers\scrum\ScrumboardController::class, 'index']);
-Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']);
+Route::group(['middleware' => 'auth'], function () {
+        Route::get('/todo', [App\Http\Controllers\todo\TodoController::class, 'index']);
+        Route::get('/', [App\Http\Controllers\contacts\ContactsController::class, 'index']);
+        Route::get('/notes', [App\Http\Controllers\note\NoteController::class, 'index']);
+        Route::get('/scrum', [App\Http\Controllers\scrum\ScrumboardController::class, 'index']);
+        Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']);
+
+        Route::get('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'index']);
+        Route::get('coches', [App\Http\Controllers\coches\CochesController::class, 'index']);
+        Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index']);
+    Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
+});
+
+
+
+Route::get('auth/register', [App\Http\Controllers\AuthController::class, 'signup'])->name('register');
+Route::get('auth/login', [App\Http\Controllers\AuthController::class, 'signin'])->name('login');
+Route::post('auth/login', [App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
+Route::post('auth/register', [App\Http\Controllers\AuthController::class, 'register'])->name('auth.register');
+
 
 
 Route::view('/analytics', 'analytics');

@@ -59,7 +59,7 @@
                 <li class="nav-item">
                     <ul>
                         
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{url('messages')}}" class="group">
                                 <div class="flex items-center">
 
@@ -82,9 +82,9 @@
                                         class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Mensajes</span>
                                 </div>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a href="{{ url('todo') }}" class="group">
+                            <a href="{{ url('clientes') }}" class="group">
                                 <div class="flex items-center">
 
                                     <svg class="group-hover:!text-primary shrink-0" width="20" height="20"
@@ -98,13 +98,13 @@
                                     </svg>
                                     <span
                                         class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                        Tareas
+                                        Clientes
                                     </span>
                                 </div>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('notes')}}" class="group">
+                            <a href="{{url('mantenimientos')}}" class="group">
                                 <div class="flex items-center">
 
                                     <svg class="group-hover:!text-primary shrink-0" width="20" height="20"
@@ -123,7 +123,7 @@
                                             fill="currentColor" />
                                     </svg>
                                     <span
-                                        class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Mis Notass</span>
+                                        class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Vehiculos</span>
                                 </div>
                             </a>
                         </li>
@@ -144,7 +144,7 @@
                                             fill="currentColor" />
                                     </svg>
                                     <span
-                                        class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Tablero</span>
+                                        class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Mantenimientos</span>
                                 </div>
                             </a>
                         </li>
