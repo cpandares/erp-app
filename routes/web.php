@@ -30,6 +30,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('servicios/{servicio}', [App\Http\Controllers\servicios\ServicioController::class, 'update'])->name('servicios.update');
         Route::delete('servicios/{id}', [App\Http\Controllers\servicios\ServicioController::class, 'destroy'])->name('servicios.destroy');
 
+        Route::get('empleados', [App\Http\Controllers\empleados\EmpleadoController::class, 'index']);
+        Route::post('empleados', [App\Http\Controllers\empleados\EmpleadoController::class, 'store'])->name('empleados.store');
+        Route::put('empleados/{id}', [App\Http\Controllers\empleados\EmpleadoController::class, 'update'])->name('empleados.update');
+        Route::delete('empleados/{id}', [App\Http\Controllers\empleados\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
 
