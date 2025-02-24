@@ -197,4 +197,16 @@ class ServicioController extends Controller
 
 
     }
+
+
+    public function data(Request $request){
+        $servicio_id = $request->servicio_id;
+        $servicio = Servicio::find($servicio_id);
+        if(!$servicio){
+            return response()->json(['ok' => false, 'message' => 'Servicio no encontrado']);
+        }
+        return response()->json(['ok' => true, 'data' => $servicio]);
+    }
+
+
 }

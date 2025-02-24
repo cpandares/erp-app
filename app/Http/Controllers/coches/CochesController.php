@@ -118,4 +118,17 @@ class CochesController extends Controller
     {
         //
     }
+
+
+    public function data(Request $request)
+    {
+        $coche_id = $request->coche_id;
+        $coche = Coche::find($coche_id);
+        if(!$coche){
+            return response()->json(['ok' => false, 'message' => 'Coche no encontrado']);
+        }
+        return response()->json(['ok' => true, 'data' => $coche]);
+        
+    }
+
 }

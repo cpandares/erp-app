@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Empleado;
 use App\Http\Requests\StoreEmpleadoRequest;
 use App\Http\Requests\UpdateEmpleadoRequest;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadoController extends Controller
 {
@@ -136,6 +138,49 @@ class EmpleadoController extends Controller
                 'ok' => false,
                 'message' => 'Error al eliminar el empleado'
             ]);
+        }
+    }
+
+    public function data(Request $request)
+    {
+        {
+            $input = $request->all();
+            $data = [];
+    
+    
+            if (isset($input['search'])) {
+                $keyword = strtolower($input['search']);
+    
+                $prm = str_replace(' ', '%', $keyword);
+                try {
+                    
+                    $clientes = DB::table('empleados')
+                        //->whereRaw("CONCAT_WS(cliente_documento,' ',cliente_nombres,' ',cliente_apellido1,' ',cliente_apellido2) like ?", '%' . $prm . '%')
+                        //->whereRaw("LOWER(CONCAT_WS(' ',cliente_documento,cliente_nombres,cliente_apellido1,cliente_apellido2) like ?", '%' . strtolower($prm) . '%)')
+                        ->whereRaw("LOWER(CONCAT_WS(' ', dni, name, lastname)) LIKE ?", '%' .($prm) . '%')
+                        
+                        ->get();
+                } catch (Exception $e) {
+                    return \Response::json("error");
+                }
+    
+    
+    
+                foreach ($clientes as $id => $item) {
+    
+                    // dd($item);
+                    $texto = $item->dni . ' ' . $item->name . ' ' . $item->lastname;
+    
+                    if (strpos(strtolower($texto), $input['search']) !== false) {
+                        $data[] = ['id' => $item->id, 'text' => ($texto)];
+                    }
+                }
+    
+    
+                // dd($data);
+                return \Response::json(array_slice($data, 0, 1000));
+            } else
+                return \Response::json(null);
         }
     }
 }

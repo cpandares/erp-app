@@ -5,6 +5,7 @@
             <h5 class="font-semibold text-lg dark:text-white-light">Mantenimientos</h5>
         </div>
         <div class="mb-5">
+            <a href="{{ route('mantenimientos.create') }}" class="btn btn-primary">Crear Mantenimiento</a>
             <div class="table-responsive text-[#515365] dark:text-white-light font-semibold">
                 <table class="whitespace-nowrap">
                     <thead>

@@ -13,6 +13,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'store'])->name('clientes.store');    
         Route::put('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'update'])->name('clientes.update');
         Route::delete('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'destroy'])->name('clientes.destroy');
+        Route::get('cliente/data/ajax', [App\Http\Controllers\clientes\ClientesController::class, 'data'])->name('clientes.data');
+        Route::get('coche/data/ajax', [App\Http\Controllers\clientes\ClientesController::class, 'getCochesClientes'])->name('coches.data');
 
 
         Route::get('coches', [App\Http\Controllers\coches\CochesController::class, 'index'])->name('coches.index');
@@ -22,18 +24,29 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'update'])->name('coches.update');
         Route::delete('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'destroy'])->name('coches.destroy');
         Route::post('coches', [App\Http\Controllers\coches\CochesController::class, 'store'])->name('coches.store');
-        Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index']);
+        Route::get('coche/ajax', [App\Http\Controllers\coches\CochesController::class, 'data'])->name('coches.data');
+
+
+        Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index'])->name('mantenimientos.index');
+        Route::get('mantenimientos/create', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'create'])->name('mantenimientos.create');
+        Route::get('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'show'])->name('mantenimientos.show');
+        Route::get('mantenimientos/{mantenimiento}/edit', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'edit'])->name('mantenimientos.edit');
+        Route::put('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'update'])->name('mantenimientos.update');
+        Route::delete('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'destroy'])->name('mantenimientos.destroy');
+        Route::post('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'store'])->name('mantenimientos.store');
 
 
         Route::get('servicios', [App\Http\Controllers\servicios\ServicioController::class, 'index']);
         Route::post('servicios', [App\Http\Controllers\servicios\ServicioController::class, 'store'])->name('servicios.store');
         Route::put('servicios/{servicio}', [App\Http\Controllers\servicios\ServicioController::class, 'update'])->name('servicios.update');
         Route::delete('servicios/{id}', [App\Http\Controllers\servicios\ServicioController::class, 'destroy'])->name('servicios.destroy');
+        Route::get('servicios/ajax', [App\Http\Controllers\servicios\ServicioController::class, 'data'])->name('servicios.data');
 
         Route::get('empleados', [App\Http\Controllers\empleados\EmpleadoController::class, 'index']);
         Route::post('empleados', [App\Http\Controllers\empleados\EmpleadoController::class, 'store'])->name('empleados.store');
         Route::put('empleados/{id}', [App\Http\Controllers\empleados\EmpleadoController::class, 'update'])->name('empleados.update');
         Route::delete('empleados/{id}', [App\Http\Controllers\empleados\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+        Route::get('empleados/data/ajax', [App\Http\Controllers\empleados\EmpleadoController::class, 'data'])->name('empleados.data');
 
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });

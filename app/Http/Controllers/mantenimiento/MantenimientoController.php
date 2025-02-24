@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\mantenimiento;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Mantenimiento;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class MantenimientoController extends Controller
@@ -26,6 +28,10 @@ class MantenimientoController extends Controller
     public function create()
     {
         //
+        $servicios = Servicio::select('id', 'name', 'price')->get();
+        return view('mantenimiento.create',[
+            'servicios' => $servicios
+        ]);
     }
 
     /**
