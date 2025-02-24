@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\coches;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Coche;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,8 @@ class CochesController extends Controller
     public function index()
     {
         //
-        $coches = Coche::all();
-       /*  dd($coches); */
+        $coches = Coche::with('cliente')->get();
+        
         return view('coches.index', compact('coches'));
     }
 
@@ -25,6 +26,11 @@ class CochesController extends Controller
     public function create()
     {
         //
+        $clientes = Cliente::select('id', 'name', 'document')->get();
+        return view('coches.create',[
+            'clientes' => $clientes
+        ]);
+
     }
 
     /**
@@ -33,6 +39,40 @@ class CochesController extends Controller
     public function store(Request $request)
     {
         //
+
+        $coche = new Coche();
+      /*   dd($request->all()); */
+        try {
+            $coche->marca = $request->marca;
+            $coche->model = $request->model;
+            $coche->placa = $request->placa;
+            $coche->color = $request->color;
+            $coche->year = $request->year;
+            $coche->cliente_id = $request->cliente_id;
+
+            if(isset($request->image)){
+                $request->validate([
+                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+
+                $name = time().'.'.$request->image->extension();
+                if(!file_exists(public_path('images/coches'))){
+                    mkdir(public_path('images/coches'), 0777, true);
+                }
+                $request->image->move(public_path('images/coches'), $name);
+                $coche->image = $name;
+
+            }
+
+
+            $coche->save();
+            return redirect()->route('coches.show', $coche->id)->with('success', 'Coche creado correctamente');
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+            return redirect()->route('coches.create')->with('error', 'Error al crear el coche');
+        }
+
     }
 
     /**
@@ -41,6 +81,12 @@ class CochesController extends Controller
     public function show(string $id)
     {
         //
+
+        $coche = Coche::find($id);
+        if(!$coche){
+            return redirect()->route('coches.index')->with('error', 'Coche no encontrado');
+        }
+        return view('coches.show', compact('coche'));
     }
 
     /**
@@ -49,6 +95,12 @@ class CochesController extends Controller
     public function edit(string $id)
     {
         //
+        $coche = Coche::find($id);
+        if(!$coche){
+            return redirect()->route('coches.index')->with('error', 'Coche no encontrado');
+        }
+        
+
     }
 
     /**

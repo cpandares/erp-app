@@ -15,8 +15,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'destroy'])->name('clientes.destroy');
 
 
-        Route::get('coches', [App\Http\Controllers\coches\CochesController::class, 'index']);
+        Route::get('coches', [App\Http\Controllers\coches\CochesController::class, 'index'])->name('coches.index');
+        Route::get('coches/create', [App\Http\Controllers\coches\CochesController::class, 'create'])->name('coches.create');
+        Route::get('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'show'])->name('coches.show');
+        Route::get('coches/{coche}/edit', [App\Http\Controllers\coches\CochesController::class, 'edit'])->name('coches.edit');
+        Route::put('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'update'])->name('coches.update');
+        Route::delete('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'destroy'])->name('coches.destroy');
+        Route::post('coches', [App\Http\Controllers\coches\CochesController::class, 'store'])->name('coches.store');
         Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index']);
+
+
+        Route::get('servicios', [App\Http\Controllers\servicios\ServicioController::class, 'index']);
+        Route::post('servicios', [App\Http\Controllers\servicios\ServicioController::class, 'store'])->name('servicios.store');
+        Route::put('servicios/{servicio}', [App\Http\Controllers\servicios\ServicioController::class, 'update'])->name('servicios.update');
+        Route::delete('servicios/{id}', [App\Http\Controllers\servicios\ServicioController::class, 'destroy'])->name('servicios.destroy');
+
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 });
 
