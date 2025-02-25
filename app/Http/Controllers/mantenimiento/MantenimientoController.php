@@ -16,7 +16,10 @@ class MantenimientoController extends Controller
     public function index()
     {
         //
-        $mantenimientos = Mantenimiento::with(['coche'])->get();
+        $mantenimientos = Mantenimiento::with(['coche','cliente','empleado'])
+                ->whereNotNull('cliente_id')
+                ->orderByDesc('id')
+                ->get();
 
        /*  dd($mantenimientos); */
         return view('mantenimiento.index', compact('mantenimientos'));
@@ -39,7 +42,49 @@ class MantenimientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /* $request->validate([
+            'coche' => 'required|exists:coches,id',
+            'fecha_ingreso' => 'required|date',
+            'description' => 'nullable|string',
+            'empleado_id' => 'required|exists:empleados,id',
+            'servicios' => 'required|array',
+            'servicios.*' => 'exists:servicios,id',
+            'price' => 'required|numeric',
+            'estado' => 'required|string'
+        ]); */
+        $mantenimiento = new Mantenimiento();
+       
+        
+       
+        try {
+            $mantenimiento->coche_id = $request->coche;
+            $mantenimiento->start_at = $request->fecha_ingreso;
+            $mantenimiento->description = $request->descripcion ?? 'N/A';
+            $mantenimiento->empleado_id = $request->encargado;
+            $mantenimiento->cliente_id = $request->cliente;
+            $mantenimiento->value = $request->price;
+            $mantenimiento->status = $request->estado;
+
+            if($mantenimiento->save()){
+                $mantenimiento->servicios()->attach($request->servicios);
+                return response()->json([
+                    'ok' => true,
+                    'message' => 'Mantenimiento creado con éxito'
+                ]);
+            }else{
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Error al crear el mantenimiento ' . $mantenimiento->errors()
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al crear el mantenimiento ' . $th->getMessage()
+            ]);
+        }
+
     }
 
     /**
@@ -48,6 +93,11 @@ class MantenimientoController extends Controller
     public function show(string $id)
     {
         //
+
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
+       /*  dd($mantenimiento); */
+
+        return view('mantenimiento.show', compact('mantenimiento'));
     }
 
     /**
@@ -56,6 +106,12 @@ class MantenimientoController extends Controller
     public function edit(string $id)
     {
         //
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
+        $servicios = Servicio::select('id', 'name', 'price')->get();
+        return view('mantenimiento.edit',[
+            'mantenimiento' => $mantenimiento,
+            'servicios' => $servicios
+        ]);
     }
 
     /**
@@ -73,4 +129,13 @@ class MantenimientoController extends Controller
     {
         //
     }
+
+
+    public function factura(string $id)
+    {
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
+        return view('mantenimiento.factura', compact('mantenimiento'));
+    }
+
+
 }

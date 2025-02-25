@@ -9,6 +9,12 @@ class Mantenimiento extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'tipo_servicios' => 'array',
+    ];
+
+  
+
     protected $fillable = [
         'coche_id',
         'cliente_id',
@@ -32,9 +38,9 @@ class Mantenimiento extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function tipoServicio()
+    public function servicios()
     {
-        return $this->belongsTo(Servicio::class);
+        return $this->belongsToMany(Servicio::class, 'mantenimiento_servicio', 'mantenimiento_id', 'servicio_id');
     }
 
     public function empleado()

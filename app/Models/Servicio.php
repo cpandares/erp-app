@@ -9,4 +9,9 @@ class Servicio extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'description', 'price', 'active'];
+
+    public function mantenimientos()
+    {
+        return $this->belongsToMany(Mantenimiento::class, 'mantenimiento_servicio', 'servicio_id', 'mantenimiento_id');
+    }
 }
