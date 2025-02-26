@@ -50,13 +50,27 @@
                             <td>{{ $item->created_at }}</td>
                             <td>{{ $item->status }}</td>
                             <td>
-                                <a href="{{ route('mantenimientos.show', $item->id) }}" class="btn btn-success mb-1">Ver</a>
-                                <a href="{{ route('mantenimientos.edit', $item->id) }}" class="btn btn-primary mb-1">Editar</a>
-                                <form action="{{ route('mantenimientos.destroy', $item->id) }}" method="POST">
+                                <a href="{{ route('mantenimientos.show', $item->id) }}" class="btn btn-success mb-1">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('mantenimientos.edit', $item->id) }}" class="btn btn-primary mb-1">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                             {{--    <form action="{{ route('mantenimientos.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Eliminar</button>
-                                </form>
+                                </form> --}}
+                                <button
+                                type="button"
+                                onclick="deleteMantenimiento({{ $item->id }})"
+                                class="btn btn-danger"
+                                >
+                                <i
+                                    class="fas fa-trash"
+                                    aria-hidden="true"
+                                ></i>
+                                </button>
                             </td>
                         </tr>
                        @endforeach                       
@@ -66,3 +80,65 @@
         </div>
     </div>
 </x-layout.default>
+
+
+<script>
+    function deleteMantenimiento(id){
+       
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/mantenimientos/${id}`,
+                        type: 'DELETE',
+                        /* csrf */
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if(response.ok){
+                                Swal.fire({
+                                title: 'Eliminado!',
+                                text: response.message,
+                                icon: 'success',
+                                showConfirmButton: true,
+                                
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                            }else{
+                                Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                showConfirmButton: true,
+                                
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                            }
+                            
+                        },
+                        error: function(response){
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                showConfirmButton: true,
+                                
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    });
+                }
+            })
+        }
+</script>

@@ -116,7 +116,7 @@ class CochesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 
 

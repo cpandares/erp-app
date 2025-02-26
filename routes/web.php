@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
-        Route::get('/todo', [App\Http\Controllers\todo\TodoController::class, 'index']);
+
+       /*  Route::get('/todo', [App\Http\Controllers\todo\TodoController::class, 'index']);
         Route::get('/', [App\Http\Controllers\contacts\ContactsController::class, 'index']);
         Route::get('/notes', [App\Http\Controllers\note\NoteController::class, 'index']);
         Route::get('/scrum', [App\Http\Controllers\scrum\ScrumboardController::class, 'index']);
-        Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']);
+        Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']); */
 
         Route::get('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'index']);
         Route::get('clientes/{id}', [App\Http\Controllers\clientes\ClientesController::class, 'show'])->name('clientes.show');
@@ -23,7 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'show'])->name('coches.show');
         Route::get('coches/{coche}/edit', [App\Http\Controllers\coches\CochesController::class, 'edit'])->name('coches.edit');
         Route::put('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'update'])->name('coches.update');
-        Route::delete('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'destroy'])->name('coches.destroy');
+        Route::delete('coches/{id}', [App\Http\Controllers\coches\CochesController::class, 'destroy'])->name('coches.destroy');
         Route::post('coches', [App\Http\Controllers\coches\CochesController::class, 'store'])->name('coches.store');
         Route::get('coche/ajax', [App\Http\Controllers\coches\CochesController::class, 'data'])->name('coches.data');
 
@@ -50,7 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('empleados/{id}', [App\Http\Controllers\empleados\EmpleadoController::class, 'destroy'])->name('empleados.destroy');
         Route::get('empleados/data/ajax', [App\Http\Controllers\empleados\EmpleadoController::class, 'data'])->name('empleados.data');
 
-    Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
+        Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
+        Route::get('/', [App\Http\Controllers\AuthController::class, 'index'])->name('index');
 });
 
 

@@ -14,6 +14,10 @@ class AuthController extends Controller
         $this->middleware('auth:sanctum', ['except' => ['login', 'register']]);
     } */
 
+    public function index(){
+        return view('index');
+    }
+
     public function signup(){
         return view('auth.register');
     }
@@ -55,7 +59,8 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            //return response()->json(['message' => 'Invalid credentials'], 401);
+            return redirect()->route('login')->with(['message' => 'Invalid credentials']);
         }
 
         try {
@@ -63,10 +68,11 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('authToken')->plainTextToken;
     
-            return redirect('/clientes')->with('token', $token);
+           // return redirect('/clientes')->with('token', $token);
+           return redirect('/')->with('token', $token);
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Credenciales Incorrectas'], 401);
         }
       
     }

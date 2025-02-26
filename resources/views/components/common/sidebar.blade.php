@@ -192,7 +192,7 @@
                                 </div>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{url('/')}}" class="group">
                                 <div class="flex items-center">
 
@@ -210,7 +210,7 @@
                                         class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Contactos</span>
                                 </div>
                             </a>
-                        </li>
+                        </li> --}}
                      
                         
                     </ul>
