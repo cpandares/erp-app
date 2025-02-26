@@ -128,6 +128,18 @@ class MantenimientoController extends Controller
     public function destroy(string $id)
     {
         //
+        $mantenimiento = Mantenimiento::find($id);
+        if($mantenimiento->delete()){
+            return response()->json([
+                'ok' => true,
+                'message' => 'Mantenimiento eliminado con éxito'
+            ]);
+        }else{
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al eliminar el mantenimiento'
+            ]);
+        }
     }
 
 

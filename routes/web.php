@@ -10,6 +10,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/messages', [App\Http\Controllers\mailbox\MailboxControlller::class, 'index']);
 
         Route::get('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'index']);
+        Route::get('clientes/{id}', [App\Http\Controllers\clientes\ClientesController::class, 'show'])->name('clientes.show');
         Route::post('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'store'])->name('clientes.store');    
         Route::put('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'update'])->name('clientes.update');
         Route::delete('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'destroy'])->name('clientes.destroy');
@@ -29,10 +30,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index'])->name('mantenimientos.index');
         Route::get('mantenimientos/create', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'create'])->name('mantenimientos.create');
-        Route::get('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'show'])->name('mantenimientos.show');
+        Route::get('mantenimientos/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'show'])->name('mantenimientos.show');
         Route::get('mantenimientos/{id}/edit', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'edit'])->name('mantenimientos.edit');
         Route::put('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'update'])->name('mantenimientos.update');
-        Route::delete('mantenimientos/{mantenimiento}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'destroy'])->name('mantenimientos.destroy');
+        Route::delete('mantenimientos/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'destroy'])->name('mantenimientos.destroy');
         Route::post('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'store'])->name('mantenimientos.store');
         Route::get('mantenimientos/factura/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'factura'])->name('mantenimientos.factura');
 

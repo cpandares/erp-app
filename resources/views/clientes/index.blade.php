@@ -198,10 +198,19 @@
                                     <td x-text="contact.phone" class="whitespace-nowrap"></td>
                                     <td>
                                         <div class="flex gap-4 items-center justify-center">
+                                            <button type="button" class="btn btn-info"
+                                                @click="showUser(contact)"
+                                            >
+                                                <i class="fas fa-eye"></i>
+                                            </button>
                                             <button type="button" class="btn btn-sm btn-outline-primary"
-                                                @click="editUser(contact)">Edit</button>
+                                                @click="editUser(contact)">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button type="button" class="btn btn-sm btn-outline-danger"
-                                                @click="deleteUser(contact)">Delete</button>
+                                                @click="deleteUser(contact)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -365,7 +374,6 @@
                 searchUser: '',
                 contactList: clientes.map(cliente => ({
                     id: cliente.id,
-
                     name: cliente.name,
                     email: cliente.email,
                     location: cliente.address,
@@ -393,6 +401,11 @@
                     }
 
                     this.addContactModal = true;
+                },
+
+                showUser(user){
+                    /* redirect to show */
+                    window.location.href = "{{url('clientes')}}"+"/"+user.id;
                 },
 
                 saveUser() {

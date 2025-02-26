@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use PDOException;
 
 class ClientesController extends Controller
 {
@@ -75,6 +76,13 @@ class ClientesController extends Controller
     public function show(string $id)
     {
         //
+        $cliente = Cliente::with('coches', 'mantenimientos')->find($id);
+        if(!$cliente){
+            return view('clientes.index')->with('error', 'Cliente no encontrado');
+        }
+
+        return view('clientes.show', compact('cliente'));
+
     }
 
     /**
@@ -178,8 +186,8 @@ class ClientesController extends Controller
                     ->whereRaw("LOWER(CONCAT_WS(' ', document, name)) LIKE ?", '%' .($prm) . '%')
                     
                     ->get();
-            } catch (Exception $e) {
-                return \Response::json("error");
+            } catch (PDOException $e) {
+                return response()->json(['ok' => false, 'message' => 'Error al buscar los clientes']);
             }
 
 
