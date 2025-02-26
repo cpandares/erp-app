@@ -1,7 +1,7 @@
 <x-layout.default>
     <div class="container mx-auto">
         <div class="mb-5">
-            <a href="{{ route('mantenimientos.index') }}" class="btn btn-primary inline-block">Volver</a>
+            <a href="{{ route('mantenimientos.show', $mantenimiento->id) }}" class="btn btn-primary inline-block">Volver</a>
         </div>
         <div class="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <form id="formMantenimiento" action="{{ route('mantenimientos.store') }}" method="POST">

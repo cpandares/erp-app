@@ -236,7 +236,8 @@
 
         $('#formMantenimiento').on('submit', function(e) {
             e.preventDefault();
-            if($('#cliente_id').val() == '') {
+            console.log({cliente_id: $('#cliente_id').val(), coche: $('#coche').val(), fecha_ingreso: $('#fecha_ingreso').val(), servicio: $('#servicio').val(), encargado: $('#encargado').val(), valor: $('#valor').val()});
+            if($('#cliente_id').val() == '' || $('#cliente_id').val() == null) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -245,7 +246,7 @@
                 return;
             }
 
-            if($('#coche').val() == '') {
+            if($('#coche').val() == '' || $('#coche').val() == null) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -254,7 +255,7 @@
                 return;
             }
 
-            if($('#fecha_ingreso').val() == '') {
+            if($('#fecha_ingreso').val() == '' || $('#fecha_ingreso').val() == null) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -263,7 +264,7 @@
                 return;
             }
 
-            if($('#servicio').val() == '') {
+            if($('#servicio').val() == '' || $('#servicio').val() == null) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -272,7 +273,7 @@
                 return;
             }
 
-            if($('#encargado').val() == '') {
+            if($('#encargado').val() == '' || $('#encargado').val() == null) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',

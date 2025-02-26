@@ -39,8 +39,11 @@
                             <td>{{ $item->fecha_ingreso }}</td>
                             
                             <td>
+                                @if ($item->empleado)
                                 {{ $item->empleado->name }}
                                 {{ $item->empleado->last_name }}
+                                    
+                                @endif
                             </td>
                             
                             

@@ -152,6 +152,11 @@
                 <div class="panel lg:col-span-2 xl:col-span-3">
                     <div class="mb-5">
                         <h5 class="font-semibold text-lg dark:text-white-light">Mantenimientos</h5>
+
+                        {{-- add nuevo mantenimiento --}}
+                        <a href="{{ url('mantenimientos/create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Mantenimiento
+                        </a>
                     </div>
                     <div class="mb-5">
                         <div class="table-responsive text-[#515365] dark:text-white-light font-semibold">
