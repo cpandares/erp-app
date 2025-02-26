@@ -130,8 +130,15 @@
                     </div>
                 </div>
                 <div class="panel lg:col-span-2 xl:col-span-3">
-                    <div class="mb-5">
+                    <div class="mb-5 flex items-center justify-between">
                         <h5 class="font-semibold text-lg dark:text-white-light">Coches</h5>
+
+                        {{-- add new coche --}}
+                       
+                        <a href="{{url('coches/create')}}" class="btn btn-primary p-2 rounded-full">
+                            Agregar coche
+                        </a>
+                       
                     </div>
                     <div class="mb-5">
                         <div class="table-responsive text-[#515365] dark:text-white-light font-semibold">
@@ -139,7 +146,7 @@
                                 <thead>
                                     <tr>
                                         <th>Marca</th>
-                                        <th>Plca</th>
+                                        <th>Placa</th>
                                         <th>Año</th>
                                         <th >Cantidad de servicios realizados</th>
                                         
@@ -161,7 +168,7 @@
                                                 class="btn btn-primary p-2 rounded-full">
                                                 <i
                                                     class="fas fa-eye"></i>
-                                                    ></i>
+                                                    </i>
                                             </a>
                                         </td>
                                     @endforeach

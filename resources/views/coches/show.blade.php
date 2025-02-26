@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <div class="panel lg:col-span-2 xl:col-span-3">
-                    <div class="mb-5">
+                    <div class="mb-5 flex justify-between items-center">
                         <h5 class="font-semibold text-lg dark:text-white-light">Mantenimientos</h5>
 
                         {{-- add nuevo mantenimiento --}}

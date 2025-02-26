@@ -58,15 +58,18 @@ class MantenimientoController extends Controller
        
         try {
             $mantenimiento->coche_id = $request->coche;
-            $mantenimiento->start_at = $request->fecha_ingreso;
+            $mantenimiento->start_at = $request->fecha_hora;
             $mantenimiento->description = $request->descripcion ?? 'N/A';
             $mantenimiento->empleado_id = $request->encargado;
             $mantenimiento->cliente_id = $request->cliente;
-            $mantenimiento->value = $request->price;
+            $mantenimiento->value =0;
             $mantenimiento->status = $request->estado;
 
             if($mantenimiento->save()){
                 $mantenimiento->servicios()->attach($request->servicios);
+                /* save value with sum price servicios */
+                $mantenimiento->value = $mantenimiento->servicios->sum('price');
+                $mantenimiento->save();
                 return response()->json([
                     'ok' => true,
                     'message' => 'Mantenimiento creado con éxito'

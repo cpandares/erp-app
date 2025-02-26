@@ -11,7 +11,7 @@
         <form action="{{ route('coches.store') }}" method="POST" class="grid grid-cols-1 gap-6" id="cocheForm">
             @csrf
             <div>
-                <label for="cliente_id" class="block text-sm font-medium text-gray-700">Cliente</label>
+                <label for="cliente_id" class="block text-sm font-medium text-white">Cliente</label>
                 <select
                      name="cliente_id" 
                      id="cliente_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -21,27 +21,27 @@
                 </select>
             </div>
             <div>
-                <label for="marca" class="block text-sm font-medium text-gray-700">Marca</label>
+                <label for="marca" class="block text-sm font-medium text-white">Marca</label>
                 <input type="text" name="marca" id="marca" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
             <div>
-                <label for="model" class="block text-sm font-medium text-gray-700">Modelo</label>
+                <label for="model" class="block text-sm font-medium text-white">Modelo</label>
                 <input type="text" name="model" id="model" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
             <div>
-                <label for="placa" class="block text-sm font-medium text-gray-700">Placa</label>
+                <label for="placa" class="block text-sm font-medium text-white">Placa</label>
                 <input type="text" name="placa" id="placa" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
             <div>
-                <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
+                <label for="color" class="block text-sm font-medium text-white">Color</label>
                 <input type="text" name="color" id="color" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
             <div>
-                <label for="year" class="block text-sm font-medium text-gray-700">Año</label>
+                <label for="year" class="block text-sm font-medium text-white">Año</label>
                 <input type="text" name="year" id="year" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             </div>
             <div>
-                <label for="year" class="block text-sm font-medium text-gray-700">Imagen</label>
+                <label for="year" class="block text-sm font-medium text-white">Imagen</label>
                 <input type="file" name="image" id="image" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
                 ">
             </div>

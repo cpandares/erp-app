@@ -72,15 +72,6 @@
                         @enderror
                     </div>
                     <div class="md:w-1/2 px-3">
-                        <label for="valor" class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Valor</label>
-                        <input type="text" name="price" id="valor" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" placeholder="Ingrese el valor del servicio" value="{{ old('valor') }}">
-                        @error('valor')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="-mx-3 md:flex mb-6">
-                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                         <label for="iniciado" class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Iniciado</label>
                         <select name="iniciado" id="iniciado" class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded">
                             <option value="1" {{ old('iniciado') == 1 ? 'selected' : '' }}>Si</option>
@@ -89,6 +80,20 @@
                         @error('iniciado')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
                         @enderror
+                    </div>
+                </div>
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                        
+
+                        {{-- si el select es si mostrar otro input con la fecha y la hora --}}
+                        <div id="fecha_hora" class="hidden">
+                            <label for="fecha_hora" class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Fecha y Hora</label>
+                            <input type="datetime-local" name="fecha_hora" id="fecha_hora" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" value="{{ old('fecha_hora') }}">
+                            @error('fecha_hora')
+                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                            @enderror 
+                        </div>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <label for="estado" class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Estado</label>
@@ -117,6 +122,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+
+    $("#iniciado").on('change', function() {
+        if(this.value == 1) {
+            $('#fecha_hora').removeClass('hidden');
+        }else{
+            $('#fecha_hora').addClass('hidden');
+        }
+    });
+
     $(document).ready(function() {
        
         $('#cliente_id').select2({

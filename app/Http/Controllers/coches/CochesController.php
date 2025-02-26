@@ -50,7 +50,7 @@ class CochesController extends Controller
             $coche->year = $request->year;
             $coche->cliente_id = $request->cliente_id;
 
-            if(isset($request->image)){
+            if(isset($request->file)){
                 $request->validate([
                     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]);
