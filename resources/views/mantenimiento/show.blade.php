@@ -23,7 +23,7 @@
                 <span>info</span>
             </li>
         </ul>
-        <div class="pt-5">
+        <div class="pt-5" x-data="mantenimiento({{ $mantenimiento->id }})">
             <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-5">
                 <div class="panel">
                     <div class="flex items-center justify-between mb-5 text-center" >
@@ -130,7 +130,11 @@
                                         d="M16.1007 13.3589C16.1007 13.3589 15.0181 14.4353 12.0631 11.4971C9.10807 8.55886 10.1907 7.48242 10.1907 7.48242"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
-                                <span class="whitespace-nowrap" dir="ltr">+1 (530) 555-12121</span>
+                                <span class="whitespace-nowrap" dir="ltr">
+                                    Número de contacto: <br><span class="text-white">
+                                        {{ $mantenimiento->cliente->phone }}
+                                    </span>
+                                </span>
                             </li>
                         </ul>
                        
@@ -148,19 +152,25 @@
                                         <th>Servicios</th>
                                         <th>Encargado</th>
                                         <th>Valor</th>
-                                        <th class="text-center">Iniciado</th>
+                                        <th >Iniciado en:</th>
+                                        @if($mantenimiento->status == 'Finalizado')
+                                        <th>
+                                            Finalizado:
+                                        </th>
+                                        @endif
                                         <th>Estado</th>
                                         <th colspan="2">
 
                                         </th>
                                     </tr>
                                 </thead>
+                                
                                 <tbody class="dark:text-white-dark">
                                     
                                             <tr>
                                                 <td>
                                                     <span class="text-primary">
-                                                        {{ implode(', ', $mantenimiento->servicios->pluck('name')->toArray()) }}
+                                                        {!! implode('<br>', $mantenimiento->servicios->pluck('name')->toArray()) !!}
                                                     </span>
                                                 </td>
                                                 <td>{{ $mantenimiento->empleado->name }}</td>
@@ -174,15 +184,20 @@
                                                     @endphp
                                                 </td>
                                                 <td >{{ $mantenimiento->start_at }}</td>
+                                                @if($mantenimiento->status == 'Finalizado')
+                                                <td>
+                                                    {{ $mantenimiento->end_at }}
+                                                </td>
+                                                @endif
                                                 <td>{{ $mantenimiento->status }}</td>
                                                 <td>
                                                    {{-- icono de ver y abrir un modal --}}
-                                                    <a href="javascript:;" class="btn btn-success mb-1">
-                                                        <i class="fa-solid fa-eye"></i>
-                                                    </a>
+                                                    
 
                                                     {{-- icono de editar y abrir un modal --}}
-                                                    <a href="{{url('mantenimientos/' . $mantenimiento->id . '/edit')}}" class="btn btn-primary mb-1" 
+                                                    <button 
+                                                    @click="openModal('edit', {{ $mantenimiento->id }})"
+                                                     class="btn btn-primary mb-1" 
                                                        
 
                                                         >
@@ -206,15 +221,179 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- total de horas invertidas --}}
+                        @if ($mantenimiento->status == 'Finalizado')
+                            <div class="flex justify-end items-center mt-8">
+                                <p class="font-semibold text-white-dark">
+                                    Total de horas invertidas: <span class="text-primary">
+                                        @php
+                                            $start = new DateTime($mantenimiento->start_at);
+                                            $end = new DateTime($mantenimiento->end_at);
+                                            $interval = $start->diff($end);
+                                            echo $interval->format('%H');
+                                        @endphp
+                                    </span>
+                                </p>    
+                            </div>
+                            
+                        @endif
+                        
                     </div>
                 </div>
             </div>
 
-            
+            <div class="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto hidden" :class="addContactModal && '!block'">
+                <div class="flex items-center justify-center min-h-screen px-4" @click.self="addContactModal = false">
+                    <div x-show="addContactModal" x-transition x-transition.duration.300 class="panel border-0 p-0 rounded-lg overflow-hidden md:w-full max-w-lg w-[90%] my-8">
+                        <button type="button" class="absolute top-4 ltr:right-4 rtl:left-4 text-white-dark hover:text-dark" @click="addContactModal = false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <h3 class="text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]" x-text="params.id ? 'Actualizar Mantenimiento' : 'Agregar Mantenimiento'"></h3>
+                        <div class="p-5">
+                            <form @submit.prevent="saveMaintenance" x-ref="editMaintenanceForm" class="grid grid-cols-1 gap-5">
+                                <div class="mb-5">
+                                    <label for="status">Estado</label>
+                                    <select id="status" name="status" class="form-select" x-model="params.status">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En Proceso">En Proceso</option>
+                                        <option value="Finalizado">Finalizado</option>
+                                        <option value="Repoceso">Repoceso</option>
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label for="end_at">Fecha y hora de Finalización</label>
+                                    {{-- <input id="end_at" name="end_at" type="date" class="form-input" x-model="params.end_at" /> --}}
+                                    <input type="datetime-local" name="end_at" id="end_at" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" x-model="params.end_at">
+                                </div>
+                                <div class="mb-5">
+                                    <label for="end_at">Valor Final</label>
+                                    <input id="value" name="value" type="number" class="form-input" x-model="params.value" />
+                                </div>
+                                <div class="flex justify-end items-center mt-8">
+                                    <button type="button" class="btn btn-outline-danger" @click="addContactModal = false">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4" x-text="params.id ? 'Actualizar' : 'Agregar'"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </div>
     </div>
 
 
 </x-layout.default>
+
+
+{{-- 
+    1. Crear un modal para editar el mantenimiento
+    2. Crear un modal para eliminar el mantenimiento
+    3. Crear un modal para imprimir la factura
+    4. Crear un modal para ver el mantenimiento
+     --}}
+
+     <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data('mantenimiento', () => ({
+                addContactModal: false,
+                params: {
+                    id: null,
+                    status: '',
+                    end_at: '',
+                    value: ''
+                },
+                openModal(type, id) {
+                    this.params.id = id;
+                    if (type === 'edit') {
+                        // Fetch the maintenance data and populate the params
+                        /* fetch(`/mantenimientos/${id}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                this.params.status = data.status;
+                                this.params.end_at = data.end_at;
+                                this.addContactModal = true;
+                            }); */
+                        $.ajax({
+                            url: `/mantenimiento/${id}`,
+                            type: 'GET',
+                            success: (data) => {
+                                console.log(data);
+                                this.params.status = data.data.status;
+                                this.params.end_at = data.data.end_at;
+                                this.params.value = data.data.value;
+                                this.addContactModal = true;
+                            }
+                        });
+
+                    }
+                },
+                saveMaintenance() {
+                    // Save the maintenance data
+                    /* fetch(`/mantenimientos/update/${this.params.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(this.params)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.addContactModal = false;
+                            // Optionally, refresh the page or update the table
+                        }
+                    }); */
+
+                    $.ajax({
+                        url: `/mantenimiento/${this.params.id}`,
+                        type: 'PATCH',
+                        data: this.params,
+                        /* csrf */
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        success: (data) => {
+                            console.log(data)
+                            if (data.ok) {
+                                this.addContactModal = false;
+                               
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Éxito!',
+                                    text: data.message,
+                                    showConfirmButton: true,
+                                    
+                                }).then(() => {
+                                    location.reload();
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '¡Error!',
+                                    text: data.message,
+                                    showConfirmButton: true,
+                                    
+                                });
+                            }
+                        },
+                        error: (error) => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Error!',
+                                text: 'Ha ocurrido un error al intentar actualizar el mantenimiento',
+                                showConfirmButton: true,
+                                
+                            });
+                        }
+                    });
+                }
+            }));
+        });
+    </script>
 

@@ -153,4 +153,45 @@ class MantenimientoController extends Controller
     }
 
 
+    public function showData(string $id)
+    {
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
+        return response()->json([
+            'ok' => true,
+            'data' => $mantenimiento
+        ]);
+    }
+
+    public function updateMantenimiento(Request $request, string $id)
+    {
+        $mantenimiento = Mantenimiento::find($id);
+        
+        try {
+            $mantenimiento->end_at = $request->end_at;
+            $mantenimiento->status = $request->status;
+            $mantenimiento->value = $request->value;
+            if($mantenimiento->update()){
+                return response()->json([
+                    'ok' => true,
+                    'message' => 'Mantenimiento actualizado con éxito'
+                ]);
+            }else{
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Error al actualizar el mantenimiento ' . $mantenimiento->errors()
+                ]);
+            }
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al actualizar el mantenimiento ' . $th->getMessage()
+            ]);
+        }
+
+
+    }
+
+
 }

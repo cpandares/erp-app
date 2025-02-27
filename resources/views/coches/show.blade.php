@@ -166,7 +166,9 @@
                                         <th>Tipo de servicio</th>
                                         <th>Encargado</th>
                                         <th>Valor</th>
-                                        <th class="text-center">Iniciado</th>
+                                        <th >Iniciado en:</th>
+                                        <th>Finalizado en:</th>
+                                        
                                         <th>Estado</th>
                                         <th colspan="2">
 
@@ -194,7 +196,17 @@
                                                 <td>{{ 
                                                     $reparacion->value
                                                 }}</td>
-                                                <td class="text-center">{{ $reparacion->created_at->format('d-m-Y') }}</td>
+                                                <td class="text-center">
+                                                    {{ $reparacion->start_at }}
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($reparacion->end_at != null)
+                                                        {{ $reparacion->end_at }}
+                                                        
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                 <td>{{ $reparacion->status }}</td>
                                                 <td>
                                                     <a href="{{ url('mantenimientos/'.$reparacion->id) }}" class="btn btn-outline-primary">
