@@ -159,7 +159,7 @@
                                         </th>
                                         @endif
                                         <th>Estado</th>
-                                        <th colspan="2">
+                                        <th >
 
                                         </th>
                                     </tr>
@@ -205,15 +205,40 @@
                                                     </button>
 
                                                     {{-- icono de eliminar y abrir un modal --}}    
-                                                    <a href="javascript:;" class="btn btn-danger mb-1">
+                                                    <a 
+                                                        x-tooltip="Eliminar Mantenimiento" 
+                                                             :data-placement="$store.app.rtlClass === 'rtl' ? 'left' : 'right'" role="tooltip"
+                                                        href="javascript:;" class="btn btn-danger mb-1">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </a>
 
                                                     {{-- imprimir factura --}}
-                                                    <a href="{{url('mantenimientos/factura/' . $mantenimiento->id)}}" class="btn btn-info mb-1" target="_blank">
+                                                    @if ($mantenimiento->status == 'Finalizado')
+                                                    <a href="{{url('mantenimientos/factura/' . $mantenimiento->id)}}" 
+                                                         x-tooltip="Exportar Factura" 
+                                                             :data-placement="$store.app.rtlClass === 'rtl' ? 'left' : 'right'" role="tooltip"
+                                                        class="btn btn-info mb-1" 
+                                                        target="_blank"
+                                                        >
                                                         <i class="fa-solid fa-print"></i>
                                                     </a>
-
+                                                        
+                                                    @endif
+                                                   
+                                                    {{-- Reportar Pago --}}
+                                                    @if ($mantenimiento->status == 'En Proceso')
+                                                    
+                                                        <a 
+                                                            href="javascript:;"
+                                                             class="btn btn-success mb-1"
+                                                             x-tooltip="Reportar Pago" 
+                                                             :data-placement="$store.app.rtlClass === 'rtl' ? 'left' : 'right'" role="tooltip"
+                                                            @click="openModal('factura', {{ $mantenimiento->id }})"
+                                                             >
+                                                            <i class="fa-solid fa-money-check"></i>
+                                                        </a>
+                                                        
+                                                    @endif
                                                    
                                                 </td>
                                             </tr>                                  
@@ -259,7 +284,7 @@
                                     <select id="status" name="status" class="form-select" x-model="params.status">
                                         <option value="Pendiente">Pendiente</option>
                                         <option value="En Proceso">En Proceso</option>
-                                        <option value="Finalizado">Finalizado</option>
+                                        {{-- <option value="Finalizado">Finalizado</option> --}}
                                         <option value="Repoceso">Repoceso</option>
                                     </select>
                                 </div>
@@ -275,6 +300,50 @@
                                 <div class="flex justify-end items-center mt-8">
                                     <button type="button" class="btn btn-outline-danger" @click="addContactModal = false">Cancelar</button>
                                     <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4" x-text="params.id ? 'Actualizar' : 'Agregar'"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto hidden" :class="facturaModal && '!block'">
+                <div class="flex items-center justify-center min-h-screen px-4" @click.self="facturaModal = false">
+                    <div x-show="facturaModal" x-transition x-transition.duration.300 class="panel border-0 p-0 rounded-lg overflow-hidden md:w-full max-w-lg w-[90%] my-8">
+                        <button type="button" class="absolute top-4 ltr:right-4 rtl:left-4 text-white-dark hover:text-dark" @click="facturaModal = false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                        <h3 class="text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]">Reportar Pago</h3>
+                        <div class="p-5">
+                            <form @submit.prevent="reportPayment" x-ref="reportPaymentForm" class="grid grid-cols-1 gap-5">
+
+                                <div class="mb-5">
+                                    <label for="payment_date">Fecha de Pago</label>
+                                    <input id="payment_date" name="payment_date" type="date" class="form-input" x-model="params.payment_date" required />
+                                </div>
+                                <div class="mb-5">
+                                    <label for="payment_date">Forma de Pago</label>
+                                    <select id="payment_method" name="payment_method" class="form-select" x-model="params.payment_method" required>
+                                        @foreach ($formaPago as $method)
+                                            <option value="{{ $method }}">{{ $method }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-5 hidden" id="chckComprobante">
+                                    <label for="comprobante"># Comprobante</label>
+                                    <input id="comprobante" name="comprobante" type="text" class="form-input" x-model="params.comprobante" />
+                                </div>
+                                <div class="mb-5">
+                                    <label for="payment_amount">Monto del Pago</label>
+                                    <input id="payment_amount" name="payment_amount" type="number" class="form-input" x-model="params.payment_amount" required />
+                                </div>
+                                <div class="flex justify-end items-center mt-8">
+                                    <button type="button" class="btn btn-outline-danger" @click="facturaModal = false">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4">Reportar</button>
                                 </div>
                             </form>
                         </div>
@@ -297,9 +366,20 @@
      --}}
 
      <script>
+
+        $("#payment_method").change(function() {
+            if ($(this).val() === 'Efectivo' || $(this).val() === 'Tarjeta') {
+                $("#chckComprobante").addClass('hidden');
+            } else {
+                $("#chckComprobante").removeClass('hidden');
+            }
+        });
+
+
         document.addEventListener("alpine:init", () => {
             Alpine.data('mantenimiento', () => ({
                 addContactModal: false,
+                facturaModal: false,
                 params: {
                     id: null,
                     status: '',
@@ -321,7 +401,7 @@
                             url: `/mantenimiento/${id}`,
                             type: 'GET',
                             success: (data) => {
-                                console.log(data);
+                                
                                 this.params.status = data.data.status;
                                 this.params.end_at = data.data.end_at;
                                 this.params.value = data.data.value;
@@ -329,6 +409,20 @@
                             }
                         });
 
+                    }
+                    else if (type === 'delete') {
+                        // Show the delete modal
+                    }
+                    else if (type === 'print') {
+                        // Show the print modal
+                    }
+                    else if (type === 'view') {
+                        // Show the view modal
+                    }
+                    else if (type === 'factura') {
+                        // Show the view modal
+                        
+                        this.facturaModal = true;
                     }
                 },
                 saveMaintenance() {
@@ -392,8 +486,56 @@
                             });
                         }
                     });
-                }
-            }));
+                },
+                reportPayment() {
+                // Report the payment data
+                $.ajax({
+                    url: `/mantenimiento/reportar-pago/${this.params.id}`,
+                    type: 'POST',
+                    data: {
+                        payment_date: this.params.payment_date,
+                        payment_amount: this.params.payment_amount,
+                        payment_method: this.params.payment_method,
+                        comprobante: this.params.comprobante
+
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    success: (data) => {
+                        if (data.ok) {
+                            this.facturaModal = false;
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Éxito!',
+                                text: data.message,
+                                showConfirmButton: true,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Error!',
+                                text: data.message,
+                                showConfirmButton: true,
+                            });
+                        }
+                    },
+                    error: (error) => {
+                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error!',
+                            text: 'Ha ocurrido un error al intentar reportar el pago .' + error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        }));
+
+            
         });
     </script>
 

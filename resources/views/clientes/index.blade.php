@@ -300,10 +300,6 @@
 
     <script>
         document.addEventListener("alpine:init", () => {
-
-
-
-
             Alpine.data("contacts", (clientes) => ({
                 defaultParams: {
                     id: null,

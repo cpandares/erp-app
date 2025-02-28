@@ -13,7 +13,7 @@
         </div>
     @endsession
 
-    {{-- haz una vista aqui donde divida el row en 4 espacios para la imagen del coche y debajo informacion y en el otro lado una tabla con el historico de reparaciones realizadas con informacion de prueba, la fecha que se hizo el detalle el nombre del empleado y si fue cancelado en su totalidad --}}
+    {{-- haz una vista aqui donde divida el row en 4 espacios para la imagen del coche y debajo informacion y en el otro lado una tabla con el historico de mantenimientoes realizadas con informacion de prueba, la fecha que se hizo el detalle el nombre del empleado y si fue cancelado en su totalidad --}}
     <div>
         <ul class="flex space-x-2 rtl:space-x-reverse">
             <li>
@@ -177,39 +177,38 @@
                                 </thead>
                                 <tbody class="dark:text-white-dark">
                                     @if ($coche->mantenimientos->count() > 0)
-                                        @foreach ($coche->mantenimientos as $reparacion)
+                                        @foreach ($coche->mantenimientos as $mantenimiento)
                                             <tr>
-                                                <td>{{ 
-                                                        implode(', ', $reparacion->servicios->pluck('name')->toArray())
-
-                                                    }}</td>
+                                                <td> <span class="text-primary">
+                                                    {!! implode('<br>', $mantenimiento->servicios->pluck('name')->toArray()) !!}
+                                                </span></td>
                                                 <td>
-                                                    @if ($reparacion->empleado == null)
+                                                    @if ($mantenimiento->empleado == null)
                                                         <span class="text-red-500">Sin asignar</span>
                                                         
                                                     @else
-                                                    {{ $reparacion->empleado->name }}
-                                                    {{ $reparacion->empleado->last_name }}
+                                                    {{ $mantenimiento->empleado->name }}
+                                                    {{ $mantenimiento->empleado->last_name }}
                                                         
                                                     @endif
                                                 </td>
                                                 <td>{{ 
-                                                    $reparacion->value
+                                                    $mantenimiento->value
                                                 }}</td>
                                                 <td class="text-center">
-                                                    {{ $reparacion->start_at }}
+                                                    {{ $mantenimiento->start_at }}
                                                 </td>
                                                 <td class="text-center">
-                                                    @if ($reparacion->end_at != null)
-                                                        {{ $reparacion->end_at }}
+                                                    @if ($mantenimiento->end_at != null)
+                                                        {{ $mantenimiento->end_at }}
                                                         
                                                     @else
                                                         -
                                                     @endif
                                                 </td>
-                                                <td>{{ $reparacion->status }}</td>
+                                                <td>{{ $mantenimiento->status }}</td>
                                                 <td>
-                                                    <a href="{{ url('mantenimientos/'.$reparacion->id) }}" class="btn btn-outline-primary">
+                                                    <a href="{{ url('mantenimientos/'.$mantenimiento->id) }}" class="btn btn-outline-primary">
                                                         <i
                                                             class="fas fa-eye"></i>
                                                         
@@ -217,7 +216,7 @@
 
                                                     <button  href="javascript:;" 
                                                         class="btn btn-outline-danger"
-                                                        onClick="deleteReparacion({{ $reparacion->id }})"
+                                                        onClick="deletemantenimiento({{ $mantenimiento->id }})"
                                                         >
                                                         <i
                                                             class="fas fa-trash"></i>
@@ -229,7 +228,7 @@
                                     @else
 
                                         <tr></tr>
-                                            <td colspan="6" class="text-center">No hay reparaciones registradas</td>
+                                            <td colspan="6" class="text-center">No hay mantenimientoes registradas</td>
                                         </tr>
                                         
                                     @endif
@@ -251,7 +250,7 @@
 
 <script>
 
-function deleteReparacion(id){
+function deletemantenimiento(id){
     Swal.fire({
         title: '¿Estás seguro?',
         text: "¡No podrás revertir esto!",

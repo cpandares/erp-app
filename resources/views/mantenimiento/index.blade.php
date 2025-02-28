@@ -53,9 +53,9 @@
                                 <a href="{{ route('mantenimientos.show', $item->id) }}" class="btn btn-success mb-1">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('mantenimientos.edit', $item->id) }}" class="btn btn-primary mb-1">
+                                {{-- <a href="{{ route('mantenimientos.edit', $item->id) }}" class="btn btn-primary mb-1">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> --}}
                              {{--    <form action="{{ route('mantenimientos.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')

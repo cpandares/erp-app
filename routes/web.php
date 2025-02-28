@@ -39,6 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('mantenimientos/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'destroy'])->name('mantenimientos.destroy');
         Route::post('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'store'])->name('mantenimientos.store');
         Route::get('mantenimientos/factura/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'factura'])->name('mantenimientos.factura');
+        /* /mantenimiento/reportar-pago/*/
+        Route::post('mantenimiento/reportar-pago/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'reportarPago'])->name('mantenimientos.reportarPago');
+        Route::get('download-factura/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'downloadPdfFactura'])->name('mantenimientos.downloadFactura');
+        /* sendFacturaByEmail */
+        Route::post('send-factura-email/{id}', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'sendFacturaByEmail'])->name('mantenimientos.sendFacturaByEmail');
 
 
         Route::get('servicios', [App\Http\Controllers\servicios\ServicioController::class, 'index']);
@@ -55,6 +60,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
         Route::get('/', [App\Http\Controllers\AuthController::class, 'index'])->name('index');
+
+
+
 });
 
 

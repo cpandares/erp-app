@@ -4,9 +4,12 @@ namespace App\Http\Controllers\mantenimiento;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Factura;
 use App\Models\Mantenimiento;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PDF;
 
 class MantenimientoController extends Controller
 {
@@ -98,9 +101,9 @@ class MantenimientoController extends Controller
         //
 
         $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
-       /*  dd($mantenimiento); */
+        $formaPago = ['Efectivo', 'Tarjeta', 'Transferencia', 'Cheque'];
 
-        return view('mantenimiento.show', compact('mantenimiento'));
+        return view('mantenimiento.show', compact('mantenimiento', 'formaPago'));
     }
 
     /**
@@ -149,7 +152,56 @@ class MantenimientoController extends Controller
     public function factura(string $id)
     {
         $mantenimiento = Mantenimiento::with(['coche', 'servicios','empleado'])->find($id);
+        $factura = Factura::where('mantenimiento_id', $id)->first();
+        if($factura){
+            return view('mantenimiento.factura', compact('mantenimiento', 'factura'));
+        }
         return view('mantenimiento.factura', compact('mantenimiento'));
+    }
+
+    public function downloadPdfFactura($id)
+    {
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios', 'empleado'])->find($id);
+        $factura = Factura::where('mantenimiento_id', $id)->first();
+        $pdf = PDF::loadView('mantenimiento.pdf.factura', compact('mantenimiento', 'factura'));
+        $name= 'factura-' . $factura->numero_factura . '.pdf';
+        /* solo abrir no descargar */
+        return $pdf->stream($name);
+
+        
+    }
+
+    public function sendFacturaByEmail($id){
+        $mantenimiento = Mantenimiento::with(['coche', 'servicios', 'empleado'])->find($id);
+        $factura = Factura::where('mantenimiento_id', $id)->first();
+        $pdf = PDF::loadView('mantenimiento.pdf.factura', compact('mantenimiento', 'factura'));
+        $name= 'factura-' . $factura->numero_factura . '.pdf';
+        /* crea el directorio con los permisos */
+        if (!file_exists(public_path('pdf'))) {
+            mkdir(public_path('pdf'), 0777, true);
+        }
+        $pdf->save(public_path('pdf/' . $name));
+        $path = public_path('pdf/' . $name);
+        $to_name = $mantenimiento->cliente->name;
+        $to_email = $mantenimiento->cliente->email;
+        $data = array('name'=> $to_name, 'body' => 'Factura de mantenimiento', 'mantenimiento' => $mantenimiento);
+        try {
+            \Mail::send('mantenimiento.pdf.email', $data, function($message) use ($to_name, $to_email, $path) {
+                $message->to('pandaresocesar@gmail.com', $to_name)
+                        ->subject('Factura de mantenimiento');
+                $message->attach($path);
+                $message->from('pandaresocesar@gmail.com','Panda Repuestos');
+            });
+            return response()->json([
+                'ok' => true,
+                'message' => 'Factura enviada con éxito'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al enviar la factura ' . $th->getMessage()
+            ]);
+        }
     }
 
 
@@ -191,6 +243,66 @@ class MantenimientoController extends Controller
         }
 
 
+    }
+
+    public function reportarPago(Request $request, string $id)
+    {
+
+        $factura = new Factura();
+        $mantenimiento = Mantenimiento::find($id);
+        if(!$mantenimiento){
+            return response()->json([
+                'ok' => false,
+                'message' => 'Mantenimiento no encontrado'
+            ]);
+        }
+        if(!isset($request->payment_amount) || !isset($request->payment_date) || !isset($request->payment_method)){
+            return response()->json([
+                'ok' => false,
+                'message' => 'Datos incompletos'
+            ]);
+        }
+        DB::beginTransaction();
+        try {
+        
+            $factura->mantenimiento_id = $id;
+            $factura->cliente_id = $mantenimiento->cliente->id;
+            $factura->empleado_id = $mantenimiento->empleado->id;
+            $factura->numero_factura = rand(1000, 9999) . '-' . rand(1000, 9999);
+            $factura->total = $request->payment_amount;
+            $factura->estado = 'Pagado';
+            $factura->fecha_pago = $request->payment_date;
+            $factura->metodo_pago = $request->payment_method;
+            $factura->comprobante_numero = isset($request->comprobante) ? $request->comprobante : null;
+    
+            if($factura->save()){
+                
+                $mantenimiento->status = 'Finalizado';
+            }
+    
+            
+            if($mantenimiento->update()){
+                DB::commit();
+                return response()->json([
+                    'ok' => true,
+                    'message' => 'Mantenimiento pagado con éxito'
+                ]);
+            }else{
+                DB::rollBack();
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Error al pagar el mantenimiento'
+                ]);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'ok' => false,
+                'message' => 'Error al pagar el mantenimiento ' . $th->getMessage()
+            ]);
+        }
+        
+       
     }
 
 
