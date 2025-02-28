@@ -122,7 +122,7 @@
                             </button>
                         </form>
 
-                        <div class="relative my-7 text-center md:mb-9">
+                        {{-- <div class="relative my-7 text-center md:mb-9">
                             <span class="absolute inset-x-0 top-1/2 h-px w-full -translate-y-1/2 bg-white-light dark:bg-white-dark"></span>
                             <span class="relative bg-white px-2 font-bold uppercase text-white-dark dark:bg-dark dark:text-white-light">or</span>
                         </div>
@@ -162,8 +162,8 @@
                                                 fill="white" />
                                         </svg>
                                     </a>
-                                </li>
-                                <li>
+                                </li> --}}
+                              {{--   <li>
                                     <a href="javascript:" class="inline-flex h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
                                         style="background: linear-gradient(135deg, rgba(239, 18, 98, 1) 0%, rgba(67, 97, 238, 1) 100%)">
                                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -181,11 +181,12 @@
                                                 fill="white" />
                                         </svg>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                         <div class="text-center dark:text-white">
-                            Don't have an account ?
+                            
+                            No posees una cuenta?
                             <a href="{{url('auth/register')}}" class="uppercase text-primary underline transition hover:text-black dark:hover:text-white">SIGN UP</a>
                         </div>
                     </div>

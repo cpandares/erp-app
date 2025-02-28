@@ -35,6 +35,20 @@
                             <p class="text-base font-bold leading-normal text-white-dark">
                                 Crea una cuenta para acceder.
                             </p>
+                            @session('message')
+                            <div x-data="{ open: true }" x-show="open" class="bg-red-100 border border-danger-400 text-danger-700 px-4 py-3 rounded relative" role="alert">
+                                <strong class="font-bold">
+                                    {{ session('message') }}
+                                </strong>
+                                <span class="block sm:inline"> {{ session('success') }}</span>
+                                <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="open = false">
+                                    <svg class="fill-current h-6 w-6 text-danger-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <title>Close</title>
+                                        <path fill-rule="evenodd" d="M14.95 5.05a.75.75 0 010 1.06l-4.89 4.89 4.89 4.89a.75.75 0 11-1.06 1.06l-4.89-4.89-4.89 4.89a.75.75 0 01-1.06-1.06l4.89-4.89-4.89-4.89a.75.75 0 011.06-1.06l4.89 4.89 4.89-4.89a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </div>
+                            @endsession
                         </div>
                         <form class="space-y-5 dark:text-white" id="register-form" method="POST" action="{{ url('auth/register') }}">
                             @csrf

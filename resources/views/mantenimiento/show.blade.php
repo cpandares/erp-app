@@ -229,8 +229,8 @@
                                         @php
                                             $start = new DateTime($mantenimiento->start_at);
                                             $end = new DateTime($mantenimiento->end_at);
-                                            $interval = $start->diff($end);
-                                            echo $interval->format('%H');
+                                            $interval = $end->diff($start);
+                                            echo $interval->format('%H horas %i minutos');
                                         @endphp
                                     </span>
                                 </p>    

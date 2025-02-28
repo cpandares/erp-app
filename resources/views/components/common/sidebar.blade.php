@@ -3,7 +3,7 @@
         class="sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300">
         <div class="bg-white dark:bg-[#0e1726] h-full">
             <div class="flex justify-between items-center px-4 py-3">
-                <a href="/" class="main-logo flex items-center shrink-0">
+                <a href="{{url('/')}}" class="main-logo flex items-center shrink-0">
                     <img class="w-8 ml-[5px] flex-none" src="/assets/images/logo.svg"
                         alt="image" />
                     <span
@@ -27,7 +27,9 @@
                     <button type="button" class="nav-link group" :class="{ 'active': activeDropdown === 'dashboard' }"
                         @click="activeDropdown === 'dashboard' ? activeDropdown = null : activeDropdown = 'dashboard'">
                         <div class="flex items-center">
-
+                            <a href="{{url('/')}}" class="main-logo flex items-center shrink-0">
+                                
+                           
                             <svg class="group-hover:!text-primary shrink-0" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.5"
@@ -40,6 +42,7 @@
 
                             <span
                                 class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Home</span>
+                            </a>
                         </div>
                        
                     </button>

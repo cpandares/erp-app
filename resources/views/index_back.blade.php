@@ -11,41 +11,48 @@
         </ul>
 
         <div class="pt-5">
-            {{-- total generado --}}
-            <div class="grid xl:grid-cols-41gap-6 mb-6">
-                <div class="panel h-full">
-                    <div class="flex items
-                        -center mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Total Facturado:</h5><br>
-                        <div class="ltr:ml-auto rtl:mr-auto relative">
-                            <div
-                                class="w-11 h-11 text-warning bg-[#ffeccb] dark:bg-warning dark:text-[#ffeccb] grid place-content-center rounded-full">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 6V18" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" />
-                                    <path
-                                        d="M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <div class="grid xl:grid-cols-3 gap-6 mb-6">
+                <div class="panel h-full xl:col-span-2">
+                    <div class="flex items-center dark:text-white-light mb-5">
+                        <h5 class="font-semibold text-lg">Revenue</h5>
+                        <div x-data="dropdown" @click.outside="open = false"
+                            class="dropdown ltr:ml-auto rtl:mr-auto">
+                            <a href="javascript:;" @click="toggle">
+                                <svg class="w-5 h-5 text-black/70 dark:text-white/70 hover:!text-primary"
+                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="5" cy="12" r="2" stroke="currentColor"
+                                        stroke-width="1.5" />
+                                    <circle opacity="0.5" cx="12" cy="12" r="2"
+                                        stroke="currentColor" stroke-width="1.5" />
+                                    <circle cx="19" cy="12" r="2" stroke="currentColor"
+                                        stroke-width="1.5" />
                                 </svg>
-                            </div>
-
-                            <span>
-                                $ {{ $totalRecaudadoServiciosFinalizados }}
-                            </span>
+                            </a>
+                            <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
+                                class="ltr:right-0 rtl:left-0">
+                                <li><a href="javascript:;" @click="toggle">Weekly</a></li>
+                                <li><a href="javascript:;" @click="toggle">Monthly</a></li>
+                                <li><a href="javascript:;" @click="toggle">Yearly</a></li>
+                            </ul>
                         </div>
-
+                    </div>
+                    <p class="text-lg dark:text-white-light/90">Total Profit <span
+                            class="text-primary ml-2">$10,840</span></p>
+                    <div class="relative overflow-hidden">
+                        <div x-ref="revenueChart" class="bg-white dark:bg-black rounded-lg">
+                            <!-- loader -->
+                            <div
+                                class="min-h-[325px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
+                                <span
+                                    class="animate-spin border-2 border-black dark:border-white !border-l-transparent  rounded-full w-5 h-5 inline-flex"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="grid xl:grid-cols-2 gap-6 mb-6">
-                    
-                
-                
+
                 <div class="panel h-full">
                     <div class="flex items-center mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Mantenimientos</h5><br>
-                       
+                        <h5 class="font-semibold text-lg dark:text-white-light">Sales By Category</h5>
                     </div>
                     <div class="overflow-hidden">
                         <div x-ref="salesByCategory" class="bg-white dark:bg-black rounded-lg">
@@ -58,60 +65,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                
-                    <div class="panel h-full w-full">
-                        <div class="flex items-center justify-between mb-5">
-                            <h5 class="font-semibold text-lg dark:text-white-light">Ultimos Mantenimientos</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="ltr:rounded-l-md rtl:rounded-r-md">Cliente</th>
-                                        <th>Servicio</th>
-                                        <th>#Factura</th>
-                                        <th>Valor</th>
-                                        <th class="ltr:rounded-r-md rtl:rounded-l-md">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ultimosMantenimientos as $item)
-                                        
-                                    <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
-                                        <td class="min-w-[150px] text-black dark:text-white">
-                                            <div class="flex items-center">
-                                                
-                                                <span class="whitespace-nowrap">
-                                                    {{$item->cliente->name}}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="text-primary">
-                                            <span class="text-primary">
-                                                {!! implode('<br>', $item->servicios->pluck('name')->toArray()) !!}
-                                            </span>
-                                        </td>
-                                        <td><a href="/apps/invoice/preview">#46894</a></td>
-                                        <td>$ {{ $item->value }}</td>
-                                        <td><span
-                                                class="badge bg-success shadow-md dark:group-hover:bg-transparent">Paid</span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                   
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                
-               
-
-                
-                   
-    
-                
             </div>
 
             <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
@@ -938,10 +891,10 @@
 
                     // revenue
                     setTimeout(() => {
-                       /*  this.revenueChart = new ApexCharts(this.$refs.revenueChart, this
+                        this.revenueChart = new ApexCharts(this.$refs.revenueChart, this
                             .revenueChartOptions)
                         this.$refs.revenueChart.innerHTML = "";
-                        this.revenueChart.render() */
+                        this.revenueChart.render()
 
                         // sales by category
                         this.salesByCategory = new ApexCharts(this.$refs.salesByCategory, this
@@ -1134,18 +1087,8 @@
 
                 // sales by category
                 get salesByCategoryOptions() {
-                    /* series: [{
-                            name: 'Finalizados',
-                            data: @json($mantenimientosFinalizados)
-                        }, {
-                            name: 'En Proceso',
-                            data: @json($mantenimientosEnProces)
-                        }, {
-                            name: 'Pendientes',
-                            data: @json($mantenimientosPendientes)
-                        }], */
                     return {
-                        series: [@json($mantenimientosFinalizados), @json($mantenimientosEnProces), @json($mantenimientosPendientes)],
+                        series: [985, 737, 270],
                         chart: {
                             type: 'donut',
                             height: 460,
@@ -1211,7 +1154,7 @@
                                 },
                             },
                         },
-                        labels: ['Finalizados', 'En Proceso', 'Pendientes'],
+                        labels: ['Apparel', 'Sports', 'Others'],
                         states: {
                             hover: {
                                 filter: {
