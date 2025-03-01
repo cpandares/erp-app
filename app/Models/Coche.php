@@ -19,4 +19,9 @@ class Coche extends Model
     {
         return $this->hasMany(Mantenimiento::class);
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
 }

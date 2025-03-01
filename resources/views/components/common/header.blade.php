@@ -11,7 +11,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                     <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/logo.svg"
                         alt="image" />
                     <span
-                        class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">VRISTO</span>
+                        class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">CarsService</span>
                 </a>
 
                 <a href="javascript:;"
@@ -845,7 +845,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                         <a href="/widgets">Widgets</a>
                     </li>
                     <li>
-                        <a href="https://vristo.sbthemes.com" target="_blank">Documentation</a>
+                        <a href="https://CarsService.sbthemes.com" target="_blank">Documentation</a>
                     </li>
                 </ul>
             </li>

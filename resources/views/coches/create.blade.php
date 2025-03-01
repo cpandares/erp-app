@@ -8,7 +8,23 @@
     {{-- create form for create a coche info --}}
     <h5 class="">Nuevo Coche</h5>
     <div class="panel mt-6">
-        <form action="{{ route('coches.store') }}" method="POST" class="grid grid-cols-1 gap-6" id="cocheForm">
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-disc list-inside text-sm text-red-600">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{-- botton regresar --}}
+     
+
+        {{-- form create coche --}}
+
+        <form class="grid grid-cols-1 gap-6" id="cocheForm">
             @csrf
             <div>
                 <label for="cliente_id" class="block text-sm font-medium text-white">Cliente</label>
@@ -45,8 +61,12 @@
                 <input type="file" name="image" id="image" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
                 ">
             </div>
-            <div>
+            <div class="flex justify-end">  
                 <button type="submit" class="btn btn-primary">Guardar</button>
+                &nbsp;
+                &nbsp;
+                <a href="{{ route('coches.index') }}" class="btn btn-secondary">Regresar</a>
+               
             </div>
         </form>
     </div>
@@ -89,8 +109,53 @@
                 }
             });
 
-            /* si todo esta validado submit */
-            this.submit();
+            event.preventDefault();
+            $.ajax({
+                url: "{{ route('coches.store') }}",
+                type: "POST",
+                data: {
+                    marca: marca,
+                    placa: placa,
+                    color: color,
+                    year: year,
+                    cliente_id: cliente_id,
+                    model: model,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                   /*  console.log(response);
+                    debugger */
+                    if(response.ok){
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado',
+                            text: response.message,
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{ route('coches.index') }}";
+                            }
+                        });
+                    }else{
+                      Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.message,
+                            showConfirmButton: true,
+                        })
+                       
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocurrio un error al guardar el coche',
+                    });
+                }
+            });
 
 
         });

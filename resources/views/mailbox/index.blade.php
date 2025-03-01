@@ -1245,7 +1245,7 @@
             Alpine.data("mailbox", () => ({
                 defaultData: {
                     id: null,
-                    from: 'vristo@mail.com',
+                    from: 'CarsService@mail.com',
                     to: '',
                     cc: '',
                     title: '',

@@ -389,14 +389,7 @@
                 openModal(type, id) {
                     this.params.id = id;
                     if (type === 'edit') {
-                        // Fetch the maintenance data and populate the params
-                        /* fetch(`/mantenimientos/${id}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                this.params.status = data.status;
-                                this.params.end_at = data.end_at;
-                                this.addContactModal = true;
-                            }); */
+                       
                         $.ajax({
                             url: `/mantenimiento/${id}`,
                             type: 'GET',

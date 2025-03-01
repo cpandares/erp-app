@@ -95,7 +95,7 @@
                 <div class="divide-y divide-white-light px-6 py-4.5 dark:divide-dark">
                     <div>
                         <div class="flex cursor-pointer items-center justify-between gap-10 px-2.5 py-2 text-base font-semibold hover:bg-primary-light hover:text-primary dark:text-white dark:hover:bg-[#1B2E4B] dark:hover:text-primary" :class="{'bg-primary-light dark:bg-[#1B2E4B] !text-primary' : active === 1}" x-on:click="active === 1 ? active = null : active = 1">
-                            <span>How to install VRISTO Admin</span>
+                            <span>How to install CarsService Admin</span>
                             <template x-if="active !== 1">
                                 <span class="shrink-0">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +161,7 @@
                     </div>
                     <div>
                         <div class="flex cursor-pointer items-center justify-between gap-10 px-2.5 py-2 text-base font-semibold hover:bg-primary-light hover:text-primary dark:text-white dark:hover:bg-[#1B2E4B] dark:hover:text-primary" :class="{'bg-primary-light dark:bg-[#1B2E4B] !text-primary' : active === 3}" x-on:click="active === 3 ? active = null : active = 3">
-                            <span>How to install VRISTO Admin</span>
+                            <span>How to install CarsService Admin</span>
                             <template x-if="active !== 3">
                                 <span class="shrink-0">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +194,7 @@
                     </div>
                     <div>
                         <div class="flex cursor-pointer items-center justify-between gap-10 px-2.5 py-2 text-base font-semibold hover:bg-primary-light hover:text-primary dark:text-white dark:hover:bg-[#1B2E4B] dark:hover:text-primary" :class="{'bg-primary-light dark:bg-[#1B2E4B] !text-primary' : active === 5}" x-on:click="active === 5 ? active = null : active = 5">
-                            <span>How to install VRISTO Admin</span>
+                            <span>How to install CarsService Admin</span>
                             <template x-if="active !== 5">
                                 <span class="shrink-0">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

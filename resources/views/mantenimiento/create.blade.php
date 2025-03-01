@@ -325,6 +325,13 @@
                             text: response.message
                         });
                     }
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrio un error al guardar el mantenimiento'
+                    });
                 }
             });
         });

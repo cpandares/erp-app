@@ -155,7 +155,7 @@
                                     <td x-text="contact.phone" class="whitespace-nowrap"></td>
                                     <td>
                                         <div class="flex gap-4 items-center justify-center">
-                                            <button type="button" class="btn btn-info"
+                                            <button type="button" class="btn btn-sm btn-outline-info"
                                                 @click="showUser(contact)"
                                             >
                                                 <i class="fas fa-eye"></i>
@@ -480,8 +480,8 @@
                 deleteUser(user) {
                     
                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
+                        title: 'Estas seguro?',
+                        text: "No podras revertir esto!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

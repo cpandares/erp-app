@@ -23,10 +23,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('coches/create', [App\Http\Controllers\coches\CochesController::class, 'create'])->name('coches.create');
         Route::get('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'show'])->name('coches.show');
         Route::get('coches/{coche}/edit', [App\Http\Controllers\coches\CochesController::class, 'edit'])->name('coches.edit');
-        Route::put('coches/{coche}', [App\Http\Controllers\coches\CochesController::class, 'update'])->name('coches.update');
+        Route::put('coches/{id}', [App\Http\Controllers\coches\CochesController::class, 'update'])->name('coches.update');
         Route::delete('coches/{id}', [App\Http\Controllers\coches\CochesController::class, 'destroy'])->name('coches.destroy');
         Route::post('coches', [App\Http\Controllers\coches\CochesController::class, 'store'])->name('coches.store');
         Route::get('coche/ajax', [App\Http\Controllers\coches\CochesController::class, 'data'])->name('coches.data');
+        Route::post('coches/{id}/upload-image', [App\Http\Controllers\coches\CochesController::class, 'uploadImage'])->name('coches.uploadImage');
+        Route::get('coches/{id}/info', [App\Http\Controllers\coches\CochesController::class, 'info'])->name('coches.info');
 
 
         Route::get('mantenimientos', [App\Http\Controllers\mantenimiento\MantenimientoController::class, 'index'])->name('mantenimientos.index');
