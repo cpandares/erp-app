@@ -4,11 +4,13 @@ namespace App\Http\Controllers\clientes;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
-
+use App\Models\Countries;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use PDOException;
+
 
 class ClientesController extends Controller
 {
@@ -19,7 +21,8 @@ class ClientesController extends Controller
     {
         //
         $clientes = Cliente::orderBy('id', 'desc')->get();
-        return view('clientes.index', compact('clientes'));
+        $countries = Countries::all();
+        return view('clientes.index', compact('clientes', 'countries'));
     }
 
     /**
@@ -50,12 +53,16 @@ class ClientesController extends Controller
 
         try {
             //code...
+            $phone = $request->codigo_telefono_pais . $request->phone;
             $cliente->name = $request->name;
+            $cliente->lastname = $request->lastname;
             $cliente->email = $request->email;
-            $cliente->phone = $request->phone;
+            $cliente->phone = $phone;
             $cliente->country = $request->country;
+            $cliente->city = $request->city;
             $cliente->address = $request->address;
             $cliente->document = $request->document;
+            $cliente->ocuppation = $request->ocuppation;
             $cliente->save();
 
             return response()->json(['ok' => true, 'message' => 'Cliente creado correctamente', 'data' => $cliente]);
@@ -79,6 +86,11 @@ class ClientesController extends Controller
         $cliente = Cliente::with('coches', 'mantenimientos')->find($id);
         if(!$cliente){
             return view('clientes.index')->with('error', 'Cliente no encontrado');
+        }
+        foreach ($cliente->coches as $coche) {
+            foreach ($coche->mantenimientos as $mantenimiento) {
+                $mantenimiento->formatted_start_at = Carbon::parse($mantenimiento->start_at)->diffForHumans();
+            }
         }
 
         return view('clientes.show', compact('cliente'));
@@ -169,10 +181,19 @@ class ClientesController extends Controller
         return response()->json(['ok' => true, 'data' => $cliente->coches]);
     }
 
-    public function data(Request $request){
+    public function data(Request $request, $id = null){
         $input = $request->all();
         $data = [];
-
+        
+        if(isset($id)){
+          
+            $cliente = Cliente::find($id);
+            if(!$cliente){
+                return response()->json(['ok' => false, 'message' => 'Cliente no encontrado']);
+            }
+            $texto = $cliente->document . ' ' . $cliente->name;
+            return \Response::json(['id' => $cliente->id, 'text' => $texto, 'phone' => $cliente->phone]);
+        }
 
         if (isset($input['search'])) {
             $keyword = strtolower($input['search']);
@@ -181,8 +202,7 @@ class ClientesController extends Controller
             try {
                 
                 $clientes = DB::table('clientes')
-                    //->whereRaw("CONCAT_WS(cliente_documento,' ',cliente_nombres,' ',cliente_apellido1,' ',cliente_apellido2) like ?", '%' . $prm . '%')
-                    //->whereRaw("LOWER(CONCAT_WS(' ',cliente_documento,cliente_nombres,cliente_apellido1,cliente_apellido2) like ?", '%' . strtolower($prm) . '%)')
+                   
                     ->whereRaw("LOWER(CONCAT_WS(' ', document, name)) LIKE ?", '%' .($prm) . '%')
                     
                     ->get();

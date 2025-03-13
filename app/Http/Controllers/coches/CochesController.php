@@ -6,18 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use App\Models\Coche;
 use App\Models\Mantenimiento;
+use App\Services\CarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CochesController extends Controller
 {
+    protected $cocheService;
+    public function __construct(CarService $cocheService) {
+        $this->cocheService = $cocheService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
-        $coches = Coche::with('cliente')->get();
+        $coches = Coche::with('cliente','images')->orderByDesc('id')->get();
         
         return view('coches.index', compact('coches'));
     }
@@ -42,43 +47,31 @@ class CochesController extends Controller
     {
         //
         if( Coche::where('placa', $request->placa)->exists() ){
-            return response()->json(['ok' => false, 'message' => 'La placa ya existe!!!!!!!!']);
-            
-        }
-        
-        $coche = new Coche();
-      /*   dd($request->all()); */
-
-
+            return response()->json(['ok' => false, 'message' => 'La placa ya existe'], 400);            
+        }       
+      
         try {
-            $coche->marca = $request->marca;
-            $coche->model = $request->model;
-            $coche->placa = $request->placa;
-            $coche->color = $request->color;
-            $coche->year = $request->year;
-            $coche->cliente_id = $request->cliente_id;
-
-            if(isset($request->file)){
-                $request->validate([
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]);
-
-                $name = time().'.'.$request->image->extension();
-                if(!file_exists(public_path('images/coches'))){
-                    mkdir(public_path('images/coches'), 0777, true);
-                }
-                $request->image->move(public_path('images/coches'), $name);
-                $coche->image = $name;
-
+            DB::beginTransaction();
+            $data = $request->validate([
+                'marca' => 'required',
+                'model' => 'required',
+                'placa' => 'required',
+                'color' => 'required',
+                'year' => 'required',
+                'cliente_id' => 'required'
+            ]);
+                       
+           $coche = $this->cocheService->store($data);
+        
+            if ($request->hasFile('images')) {
+                $this->uploadImage($request, $coche->id);
             }
-
-
-            $coche->save();
-            return response()->json(['ok' => true, 'message' => 'Coche creado correctamente']);
+            DB::commit();
+            return response()->json(['ok' => true, 'message' => 'Coche creado correctamente'], 201);
         } catch (\Throwable $th) {
             //throw $th;
-           
-            return response()->json(['ok' => false, 'message' => 'Error al crear el coche']);
+            DB::rollBack();
+            return response()->json(['ok' => false, 'message' => 'Error al crear el coche'], 500);
         }
 
     }
@@ -135,16 +128,9 @@ class CochesController extends Controller
             $coche->cliente_id = $request->cliente_id;
 
             if(isset($request->file)){
-                $request->validate([
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]);
+                
 
-                $name = time().'.'.$request->image->extension();
-                if(!file_exists(public_path('images/coches'))){
-                    mkdir(public_path('images/coches'), 0777, true);
-                }
-                $request->image->move(public_path('images/coches'), $name);
-                $coche->image = $name;
+                $this->uploadImage($request, $id);
 
             }
 

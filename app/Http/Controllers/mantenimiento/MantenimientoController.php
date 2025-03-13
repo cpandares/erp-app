@@ -4,6 +4,7 @@ namespace App\Http\Controllers\mantenimiento;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Coche;
 use App\Models\Factura;
 use App\Models\Mantenimiento;
 use App\Models\Servicio;
@@ -24,19 +25,49 @@ class MantenimientoController extends Controller
                 ->orderByDesc('id')
                 ->get();
 
-       /*  dd($mantenimientos); */
+        /* carbon diff forhumans */
+        $mantenimientos->map(function($mantenimiento){
+            $mantenimiento->diffForHumans = $mantenimiento->created_at->diffForHumans();
+            return $mantenimiento;
+        });
         return view('mantenimiento.index', compact('mantenimientos'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $hashedId = $request->query('id');
+        if($hashedId){
+            /* desencriptar md5 hashedId */
+            $id = base64_decode($hashedId);
+
+            $coche = Coche::where('id', $id)->first();
+            if(!$coche){
+                return redirect()->route('mantenimiento.create');
+            }
+           
+            /* CONTACT name y document */
+            $cliente = Cliente::where('id', $coche->cliente_id)
+            ->select('id', DB::raw('CONCAT(name, " - ", document) as name'), 'phone')
+            ->first();
+            if(!$cliente){
+                return redirect()->route('mantenimiento.create');
+            }
+            $servicios = Servicio::select('id', 'name', 'price')->get();
+            return view('mantenimiento.create',[
+                'cliente' => $cliente,
+                'servicios' => $servicios,
+                'coche' => $coche
+            ]);
+        }
         $servicios = Servicio::select('id', 'name', 'price')->get();
         return view('mantenimiento.create',[
-            'servicios' => $servicios
+            'servicios' => $servicios,
+            'cliente' => null,
+            'coche' => null
         ]);
     }
 
@@ -62,7 +93,7 @@ class MantenimientoController extends Controller
         try {
             $mantenimiento->coche_id = $request->coche;
             $mantenimiento->start_at = $request->fecha_hora;
-            $mantenimiento->description = $request->descripcion ?? 'N/A';
+            $mantenimiento->description = $request->description ?? 'N/A';
             $mantenimiento->empleado_id = $request->encargado;
             $mantenimiento->cliente_id = $request->cliente;
             $mantenimiento->value =0;

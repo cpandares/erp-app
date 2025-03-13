@@ -7,7 +7,9 @@
     <div x-data="cochesData({{ $coches->toJson() }})">
         <div class="panel mt-6 no-number-pagination next-prev-pagination">
             <h5 class="md:absolute md:top-[25px] md:mb-0 mb-5 font-semibold text-lg dark:text-white-light">Coches</h5>
-            <table id="myTable4" class="whitespace-nowrap"></table>
+            <table id="myTable4" class="whitespace-nowrap">
+                
+            </table>
         </div>
 
         <!-- Modal para editar coche -->
@@ -73,6 +75,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 
     <script>
@@ -81,37 +84,29 @@
                 coches: coches,
                 editCocheModal: false,
                 cocheParams: {
-                    id: null,
+                    id: '',
+                    images: '',
                     marca: '',
                     placa: '',
                     color: '',
                     year: '',
+
                 },
                 init() {
-                    const tableData = this.coches.map((coche, index) => [
+                    const tableData = this.coches.map((coche, index) => [                        
                         index + 1,
+                        coche.images.length ? `<img src="{{ asset('/') }}${coche.images[0].path}" class="object-cover  w-20 h-20">` : 'N/A',
                         coche.cliente ? coche.cliente.name : 'N/A', // Asegúrate de que la relación 'cliente' esté cargada
                         coche.marca, // Enlace a la pantalla de detalle del coche
                         coche.placa,
                         coche.color,
                         coche.year,
-                        `<div class="flex gap-4 items-center justify-center">
-                            <a href="{{ url('coches/${coche.id}') }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <button type="button" class="btn btn-sm btn-outline-primary"
-                                @click="editCoche(${coche.id})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" @click="deleteCoche(${coche.id})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>`
+                        `<div class="flex gap-4 items-center justify-center" x-html="getActionButtons(${coche.id})"></div>`
                     ]);
 
                     const tableOptions = {
                         data: {
-                            headings: ["#", "Cliente", "Marca", "Placa", "Color", "Año", "Acciones"],
+                            headings: ["#","Imagen", "Cliente", "Marca", "Placa", "Color", "Año", "Acciones"],
                             data: tableData
                         },
                         searchable: true,
@@ -130,6 +125,19 @@
                         prevText: 'Previous',
                         nextText: 'Next',
                     });
+                },
+                getActionButtons(id) {
+                    return `
+                        <a href="{{ url('coches/${id}') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-outline-primary" @click="editCoche(${id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" @click="deleteCoche(${id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
                 },
                 editCoche(id) {
                     const coche = this.coches.find(coche => coche.id === id);

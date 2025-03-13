@@ -19,12 +19,13 @@
                             </svg>
                             Nuevo Cliente
                         </button>
+                        
                         <div class="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto hidden"
                             :class="addContactModal && '!block'">
-                            <div class="flex items-center justify-center min-h-screen px-4"
+                            <div class="flex items-center justify-center  px-4"
                                 @click.self="addContactModal = false">
                                 <div x-show="addContactModal" x-transition x-transition.duration.300
-                                    class="panel border-0 p-0 rounded-lg overflow-hidden md:w-full max-w-lg w-[90%] my-8">
+                                    class="panel border-0 p-0 rounded-lg overflow-hidden md:w-full  w-[90%] my-8">
                                     <button type="button"
                                         class="absolute top-4 ltr:right-4 rtl:left-4 text-white-dark hover:text-dark"
                                         @click="addContactModal = false">
@@ -41,42 +42,122 @@
                                     <div class="p-5">
                                         <form @submit.prevent="saveUser" x-ref="addContactForm"
                                             class="grid grid-cols-1 gap-5">
-                                            <div class="mb-5">
-                                                <label for="name">Nombre y Apellido</label>
-                                                <input id="name" name="name" type="text"
-                                                    placeholder="Enter Name" class="form-input" x-model="params.name" />
+
+                                            <div class="mb-5 flex gap-4">
+                                                <div class="w-full">
+                                                    <label for="name">Nombre <span class="text-red-500">*</span></label>
+                                                    <input id="name" name="name" type="text"
+                                                        placeholder="Enter Name" class="form-input"
+                                                        x-model="params.name" />
+
+                                                </div>
+
+                                                <div class="w-full">
+                                                    <label for="role">Apellido <span class="text-red-500">*</span></label>
+                                                    <input id="lastname" name="lastname" type="text"
+                                                        placeholder="lastname" class="form-input"
+                                                        x-model="params.lastname" />
+                                                </div>
+                                            </div>
+                                            <div class="mb-5 flex gap-4">
+                                                <div class="w-full">
+
+                                                    <label for="email">Email <span class="text-red-500">*</span></label>
+                                                    <input id="email" name="email" type="email"
+                                                        placeholder="Enter Email" class="form-input"
+                                                        x-model="params.email" />
+                                                </div>
+
+                                                <div class="w-full">
+
+                                                    <div class="mb-5">
+                                                        <label for="document"># Documento <span class="text-red-500">*</span></label>
+                                                        <input id="document" type="text" name="document"
+                                                            placeholder="Numero de Documento" class="form-input"
+                                                            x-model="params.document" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-5 flex gap-4">
+                                                <div class="w-full">
+                                                    <label for="codigo_telefono_pais" class="block mb-1 font-medium">
+                                                        Código Teléfono <span class="text-red-500">*</span>
+                                                    </label>
+                                                    <select
+                                                        name="codigo_telefono_pais"
+                                                        id="codigo_telefono_pais"
+                                                        class="form-select block w-full sm:text-sm border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                        x-model="params.codigo_telefono_pais"
+                                                    >
+                                                        <option value="">Seleccione</option>
+                                                        @foreach ($countries as $country)
+                                                            <option value="{{ $country->dial_code }}"
+                                                                @if (@$edit->codigo_telefono_pais == $country->dial_code) selected='selected' @endif>
+                                                                {{ $country->name }} ({{ $country->dial_code }})
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            
+                                                <div class="w-full">
+                                                    <label for="number" class="block mb-1 font-medium">
+                                                        Número de Contacto <span class="text-red-500">*</span>
+                                                    </label> 
+                                                    <input
+                                                        id="number"
+                                                        name="phone"
+                                                        type="text"
+                                                        placeholder="Ingresa el número de contacto"
+                                                        class="form-input block w-full sm:text-sm border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                                        x-model="params.phone"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-5 flex gap-4">
+                                                <div class="w-full">
+                                                    <label for="country">País <span class="text-red-500">*</span></label>
+                                                    <select name="country" id="country" class="form-select"
+                                                        x-model="params.country">
+                                                        <option value="">Seleccione</option>
+                                                        @foreach ($countries as $country)
+                                                            <option value="{{ $country->name }}">{{ $country->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="w-full">
+                                                    <label for="city">Ciudad <span class="text-red-500">*</span></label>
+                                                    <input id="city" name="city" type="text"
+                                                        placeholder="Ciudad" class="form-input"
+                                                        x-model="params.city" />
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="mb-5 flex gap-4">
+                                                
+                                                
+                                                <div class="w-full">
+                                                    <label for="Country">Oficio (opcional)</label>
+                                                    <input id="occupation" name="occupation" type="text"
+                                                        placeholder="Ocupacion u Oficio" class="form-input"
+                                                        x-model="params.occupation" />
+                                                </div>
+                                                <div class="w-full">
+                                                    {{-- <label for="Country">Oficio (opcional)</label>
+                                                    <input id="occupation" name="occupation" type="text"
+                                                        placeholder="Ocupacion u Oficio" class="form-input"
+                                                        x-model="params.occupation" /> --}}
+                                                </div>
                                             </div>
                                             <div class="mb-5">
-                                                <label for="email">Email</label>
-                                                <input id="email" name="email" type="email"
-                                                    placeholder="Enter Email" class="form-input"
-                                                    x-model="params.email" />
-                                            </div>
-                                            <div class="mb-5">
-                                                <label for="number">Numero de Contacto</label>
-                                                <input id="number" name="phone" type="text"
-                                                    placeholder="Ingresa el numero de contacto" class="form-input"
-                                                    x-model="params.phone" />
-                                            </div>
-                                            <div class="mb-5">
-                                                <label for="document"># Dni</label>
-                                                <input id="document" type="text" name="document"
-                                                    placeholder="Numero de Documento" class="form-input"
-                                                    x-model="params.document" />
-                                            </div>
-                                            <div class="mb-5">
-                                                <label for="Country">País</label>
-                                                <input id="country" type="text" name="country" placeholder="Pais"
-                                                    class="form-input" x-model="params.country" />
-                                            </div>
-                                            <div class="mb-5">
-                                                <label for="address">Address</label>
+                                                <label for="address">Dirección <span class="text-red-500">*</span></label>
                                                 <textarea id="address" rows="3" name="address" placeholder="Ingresa la direccion"
                                                     class="form-textarea resize-none min-h-[130px]" x-model="params.location"></textarea>
                                             </div>
                                             <div class="flex justify-end items-center mt-8">
                                                 <button type="button" class="btn btn-outline-danger"
-                                                    @click="addContactModal = false">Cancel</button>
+                                                    @click="addContactModal = false">Cancelar</button>
                                                 <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4"
                                                     x-text="params.id ? 'Actualizar' : 'Agregar'"></button>
                                             </div>
@@ -299,7 +380,19 @@
     </div>
 
     <script>
+
+
+       
+
         document.addEventListener("alpine:init", () => {
+            $("#codigo_telefono_pais").select2({
+                width: '100%', // Ajusta el ancho completo
+                dropdownAutoWidth: true
+            })
+            $("#country").select2({
+                width: '100%', // Ajusta el ancho completo
+                dropdownAutoWidth: true
+            });
             Alpine.data("contacts", (clientes) => ({
                 defaultParams: {
                     id: null,
@@ -309,7 +402,10 @@
                     phone: '',
                     document: '',
                     country: '',
-                    location: ''
+                    location: '',
+                    lastname: '',
+                    occupation: '',
+                    city: '',
                 },
                 displayType: 'list',
                 addContactModal: false,
@@ -321,7 +417,10 @@
                     phone: '',
                     document: '',
                     country: '',
-                    location: ''
+                    location: '',
+                    lastname: '',
+                    occupation: '',
+                    city: '',
                 },
                 filterdContactsList: [],
                 searchUser: '',
@@ -333,6 +432,9 @@
                     phone: cliente.phone,
                     document: cliente.document,
                     country: cliente.country,
+                    city: cliente.city,
+                    occupation: cliente.occupation,
+                    lastname: cliente.lastname,
                     posts: 0, // Ajusta según tu lógica
                     followers: '0', // Ajusta según tu lógica
                     following: 0 // Ajusta según tu lógica
@@ -378,6 +480,26 @@
                         this.showMessage('Country is required.', 'error');
                         return true;
                     }
+                    if(!this.params.document){
+                        this.showMessage('Document is required.', 'error');
+                        return true;
+                    }
+                    if(!this.params.location){
+                        this.showMessage('Location is required.', 'error');
+                        return true;
+                    }
+                    if(!this.params.city){
+                        this.showMessage('City is required.', 'error');
+                        return true;
+                    }
+                    if(!this.params.occupation){
+                        this.showMessage('Occupation is required.', 'error');
+                        return true;
+                    }
+                    if(!this.params.lastname){
+                        this.showMessage('Lastname is required.', 'error');
+                        return true;
+                    }
 
                     if (this.params.id) {
 
@@ -398,8 +520,6 @@
                             success: (response) => {
                                
                                 if (response.ok) {
-                                   
-                                    
                                     Swal.fire({
                                         title: 'Success!',
                                         text: response.message,
@@ -418,17 +538,7 @@
                                 this.showMessage(response.message, 'error');
                             }
                         });
-                        //update user
-                       /*  let user = this.contactList.find((d) => d.id === this.params.id);
-                        user.name = this.params.name;
-                        user.email = this.params.email;
-                        user.country = this.params.country;
-                        user.phone = this.params.phone;
-                        user.location = this.params.location;
-                        user.document = this.params.document; */
-
-                    
-
+                      
 
                     } else {
                         //add user
@@ -445,6 +555,10 @@
                                 address: this.params.location,
                                 country: this.params.country,
                                 document: this.params.document,
+                                lastname: this.params.lastname,
+                                occupation: this.params.occupation,
+                                city: this.params.city,
+                                
                                 _token: "{{ csrf_token() }}"
                             },
                             success: (response) => {

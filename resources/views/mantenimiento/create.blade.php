@@ -110,12 +110,24 @@
                         @enderror
                     </div>
                 </div>
+                {{-- description --}}
+                <div class="">
+                    <div class="md:w-1/1 px-3 mb-6 md:mb-0">
+                        <label for="description" class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Descripcion</label>
+                        <textarea name="description" id="description" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" placeholder="Ingrese la descripcion del mantenimiento">{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                </div>
                 <div class="md:flex md:items-center">
                     <div class="md:w-1/3">
-                        <button type="submit" class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                        <button type="submit" class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-2" type="button">
                             Guardar
                         </button>
                     </div>
+                    
                 </div>
             </form>
 </x-layout.default>
@@ -133,6 +145,18 @@
 
     $(document).ready(function() {
        
+
+        let cliente = @json($cliente);
+        
+        if (cliente != null) {
+            let coche = @json($coche);
+            $('#cliente_id').append(`<option value="${cliente.id}" selected>${cliente.name}</option>`);
+            
+            $('#numero_contacto').val(cliente.phone);
+            $("#placa").val(coche.placa);
+            $("#coche").append(`<option value="${coche.id}" selected>${coche.marca}</option>`);
+
+        }
         $('#cliente_id').select2({
                 ajax: {
                     dataType: 'json',
@@ -304,6 +328,7 @@
                 });
                 return;
             }
+            $("#description").val();
             const data = $(this).serialize();
             $.ajax({
                 url: $(this).attr('action'),

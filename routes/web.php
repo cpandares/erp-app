@@ -15,7 +15,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('clientes', [App\Http\Controllers\clientes\ClientesController::class, 'store'])->name('clientes.store');    
         Route::put('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'update'])->name('clientes.update');
         Route::delete('clientes/{cliente}', [App\Http\Controllers\clientes\ClientesController::class, 'destroy'])->name('clientes.destroy');
-        Route::get('cliente/data/ajax', [App\Http\Controllers\clientes\ClientesController::class, 'data'])->name('clientes.data');
+        Route::get('cliente/data/ajax/{id?}', [App\Http\Controllers\clientes\ClientesController::class, 'data'])->name('clientes.data');
         Route::get('coche/data/ajax', [App\Http\Controllers\clientes\ClientesController::class, 'getCochesClientes'])->name('coches.data');
 
 

@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['name', 'email', 'phone', 'country', 'address', 'document'];
+    
+    
+    
+    protected $fillable = ['name','lastname', 'email', 'phone', 'country','city', 'address', 'document','ocuppation'];
 
     public function coches()
     {
