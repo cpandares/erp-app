@@ -255,7 +255,7 @@
                                             class="form-input" />
                                     </div>
                                     <div>
-                                        <label for="phone">Phone</label>
+                                        <label for="phone">Numero de Contacto</label>
                                         <input 
                                             id="phone" 
                                             type="text" 
@@ -362,7 +362,7 @@
                     </div>
                 </template>
                 
-                <template x-if="tab === 'payment-details'" x-init="() => { tab = 'payment-details' }">
+                <template x-if="tab === 'payment-details'" >
                     <div>
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">

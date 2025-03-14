@@ -101,7 +101,18 @@
                         coche.placa,
                         coche.color,
                         coche.year,
-                        `<div class="flex gap-4 items-center justify-center" x-html="getActionButtons(${coche.id})"></div>`
+                        ` 
+                        <div class="flex gap-4 items-center justify-center">
+                        <a href="{{ url('coches/${coche.id}') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-edit-id=="editCoche(${coche.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" data-delete-id="${coche.id}">
+                            <i class="fas fa-trash"></i>
+                        </button> </div>`
+                        
                     ]);
 
                     const tableOptions = {
@@ -125,20 +136,26 @@
                         prevText: 'Previous',
                         nextText: 'Next',
                     });
+
+                    this.$nextTick(() => {
+                        document.querySelectorAll('[data-delete-id]').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const id = e.target.getAttribute('data-delete-id');
+                                this.deleteCoche(id);
+                            });
+                        });
+                    });
+
+                    this.$nextTick(() => {
+                        document.querySelectorAll('[data-edit-id]').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const id = e.target.getAttribute('data-edit-id');
+                                this.editCoche(id);
+                            });
+                        });
+                    });
                 },
-                getActionButtons(id) {
-                    return `
-                        <a href="{{ url('coches/${id}') }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <button type="button" class="btn btn-sm btn-outline-primary" @click="editCoche(${id})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" @click="deleteCoche(${id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `;
-                },
+                
                 editCoche(id) {
                     const coche = this.coches.find(coche => coche.id === id);
                     this.cocheParams = { ...coche };
@@ -192,13 +209,13 @@
                                     });
                                 } else {
                                     Swal.fire('Error!', data.message, 'error').then(() => {
-                                        location.reload();
+                                        
                                     });
                                 }
                             })
                             .catch(error => {
                                 Swal.fire('Error!', error, 'error').then(() => {
-                                    location.reload();
+                                    
                                 });
                             });
                         }

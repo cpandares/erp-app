@@ -16,7 +16,7 @@
     <div x-data="mantenimiento({{ $mantenimiento->id }})">
         <ul class="flex space-x-2 rtl:space-x-reverse">
             <li>
-                <a href="javascript:;" class="text-primary hover:underline">Coches</a>
+                <a href="javascript:;" class="text-primary hover:underline">Mantenimiento</a>
             </li>
             <li class="before:content-['/'] ltr:before:mr-1 rtl:before:ml-1">
                 <span>info</span>
@@ -127,7 +127,19 @@
                         <h5 class="mb-3 font-bold">Estado :</h5>
                         <button class="px-2 py-1 bg-success text-white"> {{ $mantenimiento->status }} </button>
                         <button @click="openModal('edit', {{ $mantenimiento->id }})" class="btn btn-primary">Actualizar</button>
+                        @if ($mantenimiento->status == 'Finalizado')
                         <button @click="openModal('factura', {{ $mantenimiento->id }})" class="btn btn-primary">Reportar Pago</button>
+                        @endif
+                        @if ($mantenimiento->status == 'Finalizado')
+                        <a href="{{url('mantenimientos/factura/' . $mantenimiento->id)}}" 
+                             x-tooltip="Exportar Factura" 
+                                 :data-placement="$store.app.rtlClass === 'rtl' ? 'left' : 'right'" role="tooltip"
+                            class="btn btn-info mb-1" 
+                            target="_blank"
+                            >
+                            <i class="fa-solid fa-print"></i>
+                        </a>
+                        @endif
                     </div>
                     {{-- actualizar --}}
                     <div class="mt-4">
@@ -201,7 +213,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-5 hidden" id="chckComprobante">
+                            <div class="mb-5" x-show="params.payment_method === 'Transferencia' || params.payment_method === 'Cheque'" >
                                 <label for="comprobante"># Comprobante</label>
                                 <input id="comprobante" name="comprobante" type="text" class="form-input" x-model="params.comprobante" />
                             </div>

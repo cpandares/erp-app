@@ -39,7 +39,7 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         //
-       /*  dd($request->all()); */
+      /*   dd($request->all()); */
         $cliente = new Cliente();
         
         if(Cliente::where('email', $request->email)->exists()){
@@ -127,12 +127,16 @@ class ClientesController extends Controller
 
         try {
             //code...
+            $phone = $request->codigo_telefono_pais . $request->phone;
             $cliente->name = $request->name;
             $cliente->email = $request->email;
-            $cliente->phone = $request->phone;
+            $cliente->phone = $phone;
             $cliente->country = $request->country;
             $cliente->address = $request->address;
             $cliente->document = $request->document;
+            $cliente->ocuppation = $request->ocuppation;
+            $cliente->city = $request->city;
+
             $cliente->save();
 
             return response()->json(['ok' => true, 'message' => 'Cliente actualizado correctamente', 'data' => $cliente]);

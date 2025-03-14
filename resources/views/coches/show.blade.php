@@ -40,10 +40,10 @@
        
         <ul class="flex space-x-2 rtl:space-x-reverse">
             <li>
-                <a href="javascript:;" class="text-primary hover:underline">Users</a>
+                <a href="javascript:;" class="text-primary hover:underline">Coches</a>
             </li>
             <li class="before:content-['/'] ltr:before:mr-1 rtl:before:ml-1">
-                <span>Profile</span>
+                <span>Ver</span>
             </li>
         </ul>
 
@@ -195,6 +195,15 @@
                                                 {{ $mantenimiento->description}}    
                                             </p>
                                             
+                                            {{-- ir al mantenimiento  --}}
+                                            <div class="flex mt-5 float-start">
+                                                <a href="{{ url('mantenimientos/' . $mantenimiento->id) }}" 
+                                                    title="Ver Mantenimiento"
+                                                    class="btn btn-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                    
+                                                </a> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

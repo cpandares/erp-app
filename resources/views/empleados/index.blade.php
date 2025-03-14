@@ -32,7 +32,7 @@
                             <input type="email" name="email" id="email" class="form-input" x-model="formData.email" required>
                         </div>
                         <div class="mb-5">
-                            <label for="phone" class="block text-sm font-semibold dark:text-white-light">Email</label>
+                            <label for="phone" class="block text-sm font-semibold dark:text-white-light">Numero de Contacto</label>
                             <input type="text" name="phone" id="phone" class="form-input" x-model="formData.phone" required>
                         </div>
                         <div class="mb-5">

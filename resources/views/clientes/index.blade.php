@@ -46,16 +46,26 @@
                                             <div class="mb-5 flex gap-4">
                                                 <div class="w-full">
                                                     <label for="name">Nombre <span class="text-red-500">*</span></label>
-                                                    <input id="name" name="name" type="text"
-                                                        placeholder="Enter Name" class="form-input"
+                                                    <input 
+                                                        id="name" 
+                                                        name="name" 
+                                                        type="text"
+                                                        autocomplete="false"
+                                                        placeholder="Nombre" 
+                                                        class="form-input"
                                                         x-model="params.name" />
 
                                                 </div>
 
                                                 <div class="w-full">
                                                     <label for="role">Apellido <span class="text-red-500">*</span></label>
-                                                    <input id="lastname" name="lastname" type="text"
-                                                        placeholder="lastname" class="form-input"
+                                                    <input 
+                                                        id="lastname" 
+                                                        name="lastname" 
+                                                        type="text"
+                                                        autocomplete="false"
+                                                        placeholder="Apellido" 
+                                                        class="form-input"
                                                         x-model="params.lastname" />
                                                 </div>
                                             </div>
@@ -72,8 +82,13 @@
 
                                                     <div class="mb-5">
                                                         <label for="document"># Documento <span class="text-red-500">*</span></label>
-                                                        <input id="document" type="text" name="document"
-                                                            placeholder="Numero de Documento" class="form-input"
+                                                        <input 
+                                                            id="document" 
+                                                            type="text" 
+                                                            name="document"
+                                                            autocomplete="false"
+                                                            placeholder="Numero de Documento" 
+                                                            class="form-input"
                                                             x-model="params.document" />
                                                     </div>
                                                 </div>
@@ -89,11 +104,12 @@
                                                         id="codigo_telefono_pais"
                                                         class="form-select block w-full sm:text-sm border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                                         x-model="params.codigo_telefono_pais"
+                                                        x-ref="codigo_telefono_pais"
                                                     >
                                                         <option value="">Seleccione</option>
                                                         @foreach ($countries as $country)
-                                                            <option value="{{ $country->dial_code }}"
-                                                                @if (@$edit->codigo_telefono_pais == $country->dial_code) selected='selected' @endif>
+                                                            <option  value="{{ $country->dial_code }}"
+                                                                >
                                                                 {{ $country->name }} ({{ $country->dial_code }})
                                                             </option>
                                                         @endforeach
@@ -118,11 +134,20 @@
                                             <div class="mb-5 flex gap-4">
                                                 <div class="w-full">
                                                     <label for="country">País <span class="text-red-500">*</span></label>
-                                                    <select name="country" id="country" class="form-select"
-                                                        x-model="params.country">
+                                                    <select 
+                                                        name="country" 
+                                                        id="country" 
+                                                        class="form-select"
+                                                        x-model="params.country"
+                                                        x-ref="countrySelect"
+                                                        >
                                                         <option value="">Seleccione</option>
                                                         @foreach ($countries as $country)
-                                                            <option value="{{ $country->name }}">{{ $country->name }}</option>
+                                                            
+                                                            <option 
+                                                                value="{{ $country->id }}"
+                                                                >
+                                                                {{ $country->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -258,142 +283,15 @@
                 </div>
             </template>
         </div>
-        <template x-if="displayType === 'grid'">
-            <div class="grid 2xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 w-full">
-                <template x-for="contact in filterdContactsList" :key="contact.id">
-                    <div class="bg-white dark:bg-[#1c232f] rounded-md overflow-hidden text-center shadow relative">
-                        <div
-                            class="bg-white/40 rounded-t-md bg-[url('/assets/images/notification-bg.png')] bg-center bg-cover p-6 pb-0">
-                            <template x-if="contact.path">
-                                <img class="object-contain w-4/5 max-h-40 mx-auto"
-                                    :src="`/assets/images/${contact.path}`" />
-                            </template>
-                        </div>
-                        <div class="px-6 pb-24 -mt-10 relative">
-                            <div class="shadow-md bg-white dark:bg-gray-900 rounded-md px-2 py-4">
-                                <div class="text-xl" x-text="contact.name"></div>
-                                <div class="text-white-dark" x-text="contact.role"></div>
-                                <div class="flex items-center justify-between flex-wrap mt-6 gap-3">
-                                    <div class="flex-auto">
-                                        <div class="text-info" x-text="contact.posts"></div>
-                                        <div>Posts</div>
-                                    </div>
-                                    <div class="flex-auto">
-                                        <div class="text-info" x-text="contact.following"></div>
-                                        <div>Following</div>
-                                    </div>
-                                    <div class="flex-auto">
-                                        <div class="text-info" x-text="contact.followers"></div>
-                                        <div>Followers</div>
-                                    </div>
-                                </div>
-                                <div class="mt-4">
-                                    <ul class="flex space-x-4 rtl:space-x-reverse items-center justify-center">
-                                        <li>
-                                            <a href="javascript:;"
-                                                class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="w-4 h-4">
-                                                    <path
-                                                        d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;"
-                                                class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="w-4 h-4">
-                                                    <rect x="2" y="2" width="20" height="20" rx="5"
-                                                        ry="5"></rect>
-                                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                                    <line x1="17.5" y1="6.5" x2="17.51"
-                                                        y2="6.5"></line>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;"
-                                                class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="w-4 h-4">
-                                                    <path
-                                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
-                                                    </path>
-                                                    <rect x="2" y="9" width="4" height="12"></rect>
-                                                    <circle cx="4" cy="4" r="2"></circle>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;"
-                                                class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="w-4 h-4">
-                                                    <path
-                                                        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mt-6 grid grid-cols-1 gap-4 ltr:text-left rtl:text-right">
-                                <div class="flex items-center">
-                                    <div class="flex-none ltr:mr-2 rtl:ml-2">Email :</div>
-                                    <div class="truncate text-white-dark" x-text="contact.email"></div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex-none ltr:mr-2 rtl:ml-2">Phone :</div>
-                                    <div class="text-white-dark" x-text="contact.phone"></div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex-none ltr:mr-2 rtl:ml-2">Address :</div>
-                                    <div class="text-white-dark" x-text="contact.location"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 flex gap-4 absolute bottom-0 w-full ltr:left-0 rtl:right-0 p-6">
-                            <button type="button" class="btn btn-outline-primary w-1/2"
-                                @click="editUser(contact)">Edit</button>
-                            <button type="button" class="btn btn-outline-danger w-1/2"
-                                @click="deleteUser(contact)">Delete</button>
-                        </div>
-                    </div>
-                </template>
-            </div>
-        </template>
+        
     </div>
 
     <script>
-
-
-       
-
         document.addEventListener("alpine:init", () => {
-            $("#codigo_telefono_pais").select2({
-                width: '100%', // Ajusta el ancho completo
-                dropdownAutoWidth: true
-            })
-            $("#country").select2({
-                width: '100%', // Ajusta el ancho completo
-                dropdownAutoWidth: true
-            });
+            
+            
             Alpine.data("contacts", (clientes) => ({
+                
                 defaultParams: {
                     id: null,
                     name: '',
@@ -435,13 +333,35 @@
                     city: cliente.city,
                     occupation: cliente.occupation,
                     lastname: cliente.lastname,
-                    posts: 0, // Ajusta según tu lógica
-                    followers: '0', // Ajusta según tu lógica
-                    following: 0 // Ajusta según tu lógica
+                   
                 })),
 
                 init() {
                     this.searchContacts();
+                    this.$nextTick(() => {
+                        $(this.$refs.countrySelect).select2(
+                            {
+                                width: '100%',
+                                dropdownAutoWidth: true,
+                            }
+                        )
+                            .on('change', (e) => {
+                                this.params.country = e.target.value;
+
+                            });
+                    });
+
+                    this.$nextTick(() => {
+                        $(this.$refs.codigo_telefono_pais).select2(
+                            {
+                                width: '100%',
+                                dropdownAutoWidth: true,
+                            }
+                        )
+                            .on('change', (e) => {
+                                this.params.codigo_telefono_pais = e.target.value;
+                            });
+                    });
                 },
 
                 searchContacts() {
@@ -464,40 +384,40 @@
                 },
 
                 saveUser() {
+                    
                     if (!this.params.name) {
-                        this.showMessage('Name is required.', 'error');
+                        this.showMessage('Nombre es requerido.', 'error');
                         return true;
                     }
                     if (!this.params.email) {
-                        this.showMessage('Email is required.', 'error');
+                        this.showMessage('Email ies requerido.', 'error');
                         return true;
                     }
                     if (!this.params.phone) {
-                        this.showMessage('Phone is required.', 'error');
+                        this.showMessage('Télefono es requerido', 'error');
                         return true;
                     }
-                    if (!this.params.country) {
-                        this.showMessage('Country is required.', 'error');
-                        return true;
-                    }
+                 
                     if(!this.params.document){
-                        this.showMessage('Document is required.', 'error');
+                        this.showMessage('Documento es requerido.', 'error');
                         return true;
                     }
                     if(!this.params.location){
-                        this.showMessage('Location is required.', 'error');
+                        this.showMessage('Direccón es requeridoa.', 'error');
                         return true;
                     }
                     if(!this.params.city){
-                        this.showMessage('City is required.', 'error');
+                        this.showMessage('Ciudad es requerida.', 'error');
                         return true;
                     }
-                    if(!this.params.occupation){
-                        this.showMessage('Occupation is required.', 'error');
-                        return true;
-                    }
+                    
                     if(!this.params.lastname){
-                        this.showMessage('Lastname is required.', 'error');
+                        this.showMessage('Apellido es requerido.', 'error');
+                        return true;
+                    }
+
+                    if(!this.params.country){
+                        this.showMessage('País es requerido.', 'error');
                         return true;
                     }
 
@@ -514,6 +434,7 @@
                                 address: this.params.location,
                                 country: this.params.country,
                                 document: this.params.document,
+                                codigo_telefono_pais: document.getElementById('codigo_telefono_pais').value,
                                 _token: "{{ csrf_token() }}",
                                 _method: "PUT"
                             },
@@ -521,13 +442,14 @@
                                
                                 if (response.ok) {
                                     Swal.fire({
-                                        title: 'Success!',
+                                        title: 'Exito!',
                                         text: response.message,
                                         icon: 'success',
                                         timer: 3000,
                                         showConfirmButton: true,
                                     }).then(() => {
-                                        window.location.reload();
+                                        /* show cliente */
+                                        window.location.href = "{{url('clientes')}}"+"/"+this.params.id;
                                     });
                                     
                                 } else {
@@ -558,14 +480,14 @@
                                 lastname: this.params.lastname,
                                 occupation: this.params.occupation,
                                 city: this.params.city,
+                                codigo_telefono_pais: document.getElementById('codigo_telefono_pais').value,
                                 
                                 _token: "{{ csrf_token() }}"
                             },
                             success: (response) => {
-                                console.log(response);
+                               
                                 if (response.ok) {
-                                    /* call toast */
-                                    console.log(response.errors);
+                                   
                                     
                                    Swal.fire({
                                         title: 'Success!',

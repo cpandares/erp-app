@@ -159,16 +159,18 @@ class CochesController extends Controller
         try {
             DB::beginTransaction();
             /* eliminar mantenimiento */
-            $mantenimientos = Mantenimiento::where('coche_id', $id)->get();
+            /* $mantenimientos = Mantenimiento::where('coche_id', $id)->get();
             foreach ($mantenimientos as $mantenimiento) {
                 $mantenimiento->delete();
-            }
+            } */
             /* eliminar imagenes */
             $imagenes = $coche->images;
-            foreach ($imagenes as $imagen) {
-                $imagen->delete();
+            if(count($imagenes) > 0){
+                foreach ($imagenes as $imagen) {
+                    $imagen->delete();
+                }
             }
-            /* eliminar coche */
+                        /* eliminar coche */
             $coche->delete();
             DB::commit();
             return response()->json(['ok' => true, 'message' => 'Coche eliminado correctamente']);
